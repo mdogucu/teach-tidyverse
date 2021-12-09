@@ -8,7 +8,7 @@ Challenges of teaching data science, how to overcome them, other suggestions, ti
 
 <hr>
 
-[Slides :computer:] Workshop details and materials can be found [here](https://mdogucu.github.io/teach-tidyverse).
+:computer: Workshop details and materials can be found [here](https://mdogucu.github.io/teach-tidyverse).
 
 <hr>
 
