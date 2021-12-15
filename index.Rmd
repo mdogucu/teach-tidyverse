@@ -14,10 +14,6 @@ output:
     css: styles.css
 ---
 
-## Before the Workshop
-- [Download and Install R](https://mirror.las.iastate.edu/CRAN/) You want to download the base version as if you are installing R for the time. If you already have R on your computer make sure that it is the latest version(4.1.2). If it is not the latest version then please update it. 
-- [Install RStudio](https://rstudio.com/products/rstudio/download/). Free version should suffice. 
-- Watch [this video]() to download files needed for the workshop.
 
 ## During the Workshop
 
