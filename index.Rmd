@@ -26,8 +26,8 @@ output:
 0. [Introduction and Setup](slides/0-intro-setup.html)  
 1. [Introduction to Toolkit and Data Basics](slides/1-toolkit-data.html)
 2. [Data Visualization](slides/2-data-viz.html)
-3. [Data Wrangling](slides/3-wrangle-data.html)  
-4. [Packages and External Data Sets](slides/4-package-dataset.html)  
+3. [Data Wrangling](slides/3-data-wrangle.html)  
+4. [Packages and External Data Sets](slides/4-package-datasets.html)  
 5. [Wrap Up](slides/5-wrap-up.html)  
 
 
