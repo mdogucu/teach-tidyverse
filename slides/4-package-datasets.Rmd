@@ -44,9 +44,11 @@ class: middle
 
 class: center middle inverse
 
-.font50[Naming files]
+.font50[R packages]
 
 ---
+
+
 class: middle center
 
 .pull-left[
@@ -337,9 +339,7 @@ class: middle
 
 - a README should be up-to-date (e.g. from proposal to presentation stage of final projects they need to be updated).
 
---
 
-- On GitHub we use markdown for README file (`README.md`). Good news: [emojis are supported.](https://gist.github.com/rxaviers/7360908)
 
 ---
 
@@ -410,6 +410,8 @@ read_dta("dataset.dta")
 
 ---
 
+class: middle
+
 ## Where is the dataset file?
 
 Importing data will depend on where the dataset is on your computer. However we use the help of `here::here()` function. 
@@ -428,8 +430,8 @@ class: middle
 ## Schedule for the Day
 
 __10:00 - 10:15 Introduction and Setup__  
-10:15 - 11:15 Introduction to Toolkit and Data Basics
-11:20 - 12:30 Data Visualization  
-1:00 - 1:45 Data Wrangling   
-1:45 - 2:15 Packages and External Datasets
-__2:15 - 2:30 Wrap Up__
+__10:15 - 11:15 Introduction to Toolkit and Data Basics__
+__11:20 - 12:30 Data Visualization__  
+__1:00 - 1:45 Data Wrangling__   
+__1:45 - 2:15 Packages and External Datasets__  
+2:15 - 2:30 Wrap Up
