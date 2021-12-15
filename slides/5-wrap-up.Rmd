@@ -1,0 +1,139 @@
+---
+title: "Teaching an Introductory Data Science course with tidyverse workshop"
+subtitle: "Wrap up"
+author: "Dr. Mine Dogucu"
+date: "2021-12-15"
+output:
+  xaringan::moon_reader:
+    css: slide-styles.css
+    lib_dir: libs
+    nature:
+      ratio: 16:9
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+
+layout: true
+
+<!-- This file by Mine Dogucu is licensed under a  Attribution-ShareAlike 2.5 Generic License (CC BY-SA 2.5) More information about the license can be found at https://creativecommons.org/licenses/by-sa/2.5/ -->
+  
+<div class="my-header"></div>
+
+<div class="my-footer"> 
+ CC BY-NC-ND 4.0 <a href="https://mdogucu.ics.uci.edu">Mine Dogucu</a></div> 
+
+---
+
+class: middle
+
+## Schedule for the Day
+
+10:00 - 10:15 Introduction and Setup  
+10:15 - 11:15 Introduction to Toolkit and Data Basics  
+11:20 - 12:30 Data Visualization  
+1:00 - 1:45 Data Wrangling   
+1:45 - 2:15 Packages and External Datasets
+__2:15 - 2:30 Wrap Up__
+
+---
+
+class: model
+
+## If we had more time
+
+- Inference using `library(infer)`.
+- Modeling (linear regression and logistic regression)
+- Git and GitHub (maybe second year of teaching)
+---
+
+class: middle
+
+## Textbooks and Other Resources
+
+- [Introduction to Data Science](https://ubc-dsci.github.io/introduction-to-datascience/)
+- [Modern Data Science with R](https://mdsr-book.github.io/mdsr2e/)
+- [R for Data Science (R4DS)](https://r4ds.had.co.nz/)
+- [learnR4free](https://www.learnr4free.com/en/index.html)
+-
+
+---
+
+## Where to Find Datasets - R Packages
+
+```{r}
+library(fivethirtyeight)
+library(openintro)
+library(titanic)
+library(palmerpenguins)
+library(bayesrules)
+```
+ 
+Search for package vignette
+
+---
+class: middle
+
+
+## Where to Find Datasets - External
+
+[UCI Machine Learning Repository](https://archive.ics.uci.edu/ml/index.php)
+
+[Harvard Dataverse](https://dataverse.harvard.edu/)
+
+
+[Data.gov](https://www.data.gov/)
+
+[US Government Data](https://sctyner.github.io/static/presentations/Misc/GraphicsteamISU/2018-11-16-us-govt-data.html)
+
+[California Open Data](https://data.ca.gov/)
+
+[Los Angeles Open Data](https://data.lacity.org/browse)
+
+[NYC OpenData](https://opendata.cityofnewyork.us/)
+
+
+---
+class: middle
+
+
+## Where to Find Datasets - External
+
+[Data is Plural](https://docs.google.com/spreadsheets/d/1wZhPLMCHKJvwOkP4juclhjFgqIY8fQFMemwKL2c64vk/edit#gid=0)
+
+
+
+
+[UN data](http://data.un.org/)
+
+
+[IPUMS survey data from around the world](https://ipums.org/)
+
+[CORGIS: The Collection of Really Great, Interesting, Situated Datasets](https://think.cs.vt.edu/corgis/csv/)
+
+[PISA data](https://www.oecd.org/pisa/data/)
+
+[Google Dataset Search](https://datasetsearch.research.google.com/)
+
+
+---
+class: middle
+
+Weekly folder
+
+- .Rmd file for taking lecture notes
+- .Rmd file for homework
+- .Rmd file for quizzes
+- datasets
+- One `.Rproj` file per week.
+
+---
+
+class: middle
+
+## Making slides with xaringan package
+
+1. install the package
+2. File -> New File -> R Markdown -> From Template -> Ninja Presentation;
+3. Knit the template

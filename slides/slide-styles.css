@@ -1,0 +1,184 @@
+/* This file by Mine Dogucu is licensed under a  Attribution-ShareAlike 2.5 Generic License (CC BY-SA 2.5) More information about the license can be found at https://creativecommons.org/licenses/by-sa/2.5/ */
+
+
+.title-slide {
+  background-color: #b0a160	;
+}
+
+.title-slide h1, .title-slide h2, .title-slide h3  {
+  color: #434e52;
+}
+
+
+.title-slide .remark-slide-number {
+  display: none;
+}
+
+a{
+  font-weight: bold;
+  color:#7b7043;
+}
+
+p,h1,h2 {
+  font-size: 30px;
+  color:#464026;
+}
+
+h1 {
+  color: #34301C;
+}
+
+ul {
+  font-size: 30px;
+
+}
+
+blockquote {
+  background: #f9f9f9;
+  border-left: 10px solid #ccc;
+  margin: 1.5em 10px;
+  padding: 0.5em 10px;
+  quotes: "\201C""\201D""\2018""\2019";
+  font-size:30px;
+}
+
+
+td{
+  font-size:32px;
+  padding:5px;
+  text-align:center;
+  
+}
+
+th, td{padding: 5px;
+  font-size:32px;
+}
+
+thead, tfoot, tr:nth-child(even) { background: #eee }
+
+
+div.my-header {
+    background-color: #b0a160;
+    color: #434e52;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    height: 30px;
+    width: 100%;
+    text-align: left;
+}
+
+div.my-footer {
+    background-color: #b0a160;
+    color: #434e52;
+    position: fixed;
+    bottom: 0px;
+    left: 0px;
+    height: 33px;
+    width: 100%;
+    text-align: center;
+}
+
+div.my-footer a{
+  font-weight: bold;
+  color: #434e52;
+
+}
+ul li{
+  color:#464026;
+  list-style-type: square;
+  font-size:30px;
+
+}
+
+ol li{
+  font-size:30px;
+
+}
+
+  
+  
+.question{
+  background-color:#cfafaf;
+  font-size: 43px;
+  color:#000000;
+  text-align:center;
+
+}
+
+.pull-left {
+  float: left;
+  width: 48%;
+}
+.pull-right {
+  float: right;
+  width: 48%;
+}
+
+.center-image {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}
+
+.remark-code, .remark-inline-code { 
+  font-family: 'Source Code Pro', 'Lucida Console', Monaco, monospace;
+  font-size: 22px;
+}
+
+.strike{
+  text-decoration: line-through;
+
+}
+
+.left-panel {
+  width: 43%;
+  float: left;
+}
+.right-panel {
+  width: 55%;
+  float: right;
+  padding-left: 1%;
+}
+
+td{
+  font-size:32px;
+  padding:5px;
+  text-align:center;
+  
+}
+
+th, td{padding: 5px;
+  font-size:30px;
+}
+
+
+
+/*tables*/
+
+thead, tfoot, tr:nth-child(even){background: #DFD9BF}
+
+table{
+  overflow-x: auto;
+  margin-left:auto;
+  margin-right: auto;
+}
+/*end of tables*/
+
+.footnote{
+    position: fixed;
+    bottom: 33px;
+    font-size:22px;
+
+}
+
+.large{
+  font-size:75px;
+}
+
+.font30{font-size:30px}
+.font50{font-size:50px}
+.font75{font-size:75px}
+.font100{font-size:100px}
+.font150{font-size:150px}

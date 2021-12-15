@@ -8,7 +8,9 @@ Challenges of teaching data science, how to overcome them, other suggestions, ti
 
 <hr>
 
-:computer: Workshop details and materials can be found [here](https://mdogucu.github.io/teach-tidyverse).
+:computer: Workshop details and materials can be found [here](https://mdogucu.github.io/teach-tidyverse).  
+:calendar: 2021-12-15  
+:round_pushpin: [Cypress College](https://www.cypresscollege.edu/)
 
 <hr>
 
@@ -18,7 +20,7 @@ Mine Dogucu, Assistant Professor of Teaching, Department of Statistics, Universi
 
 Website: [minedogucu.com](http://www.minedogucu.com)
 
-Twitter: [\@MineDogucu](http://www.twitter.com/MineDogucu)  
+Twitter: [@MineDogucu](http://www.twitter.com/MineDogucu)  
 
 
 <hr>

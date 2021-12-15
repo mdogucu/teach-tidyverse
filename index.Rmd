@@ -1,0 +1,61 @@
+---
+title: "Teaching an Introductory Data Science course with tidyverse workshop"
+subtitle: "at Cypress College"
+date: "2021-12-15"
+output: 
+  html_document:
+    toc: true
+    toc_depth: 3
+    toc_float: 
+      collapsed: false
+      smooth_scroll: false
+    theme:  default
+    highlight: null
+    css: styles.css
+---
+
+## Before the Workshop
+- [Download and Install R](https://mirror.las.iastate.edu/CRAN/) You want to download the base version as if you are installing R for the time. If you already have R on your computer make sure that it is the latest version(4.1.2). If it is not the latest version then please update it. 
+- [Install RStudio](https://rstudio.com/products/rstudio/download/). Free version should suffice. 
+- Watch [this video]() to download files needed for the workshop.
+
+## During the Workshop
+
+### Slides
+
+0. [Introduction and Setup](slides/0-intro-setup.html)  
+1. [Introduction to Toolkit and Data Basics](slides/1-toolkit-data.html)
+2. [Data Visualization](slides/2-data-viz.html)
+3. [Data Wrangling](slides/3-wrangle-data.html)  
+4. [Packages and External Data Sets](slides/4-package-dataset.html)  
+5. [Wrap Up](slides/5-wrap-up.html)  
+
+
+### Datasets
+
+Download instructions
+
+- [LA Police Payroll](https://controllerdata.lacity.org/Payroll/Police-Payroll/sxpf-rh6t) To be downloaded in csv format. 
+
+- <a href="slides/data/cool_study.xlsx">cool_study</a>
+
+- [HIV Antibody Test](https://wwwn.cdc.gov/nchs/nhanes/search/datapage.aspx?Component=Laboratory&CycleBeginYear=2017) Note that the data is in XPT format.
+
+## After the Workshop
+
+- Join the conversation on Twitter with #rstats #tidyverse tags. It is a welcoming community. 
+- Find your local R meetups on [meetup.com](https://www.meetup.com/topics/r-project-for-statistical-computing/).
+- Try Out [Tidy Tuesday](https://github.com/rfordatascience/tidytuesday).
+- Join [R for Data Science Learning Community](https://www.rfordatasci.com/).
+
+## Instructor Info
+
+Mine Dogucu, Assistant Professor of Teaching, Department of Statistics, University of California  
+[minedogucu.com](http://www.minedogucu.com)   
+[@MineDogucu](http://www.twitter.com/MineDogucu) 
+
+
+## Source Code
+
+The source code is available [here](https://github.com/mdogucu/teach-tidyverse)
+

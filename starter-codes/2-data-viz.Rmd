@@ -1,0 +1,39 @@
+---
+title: "Data Visualization"
+author: "Mine Dogucu"
+date: "12/14/2021"
+output: html_document
+---
+
+<!--Note down your name and correct date in the YAML part-->
+
+```{r echo = FALSE, message=FALSE, warning=FALSE}
+xaringanExtra::use_panelset()
+library(openintro)
+library(palmerpenguins)
+library(tidyverse)
+library(titanic)
+library(janitor)
+
+babies <- babies %>% 
+  mutate(smoke = as.logical(smoke),
+         parity = as.logical(parity))
+titanic <- titanic_train %>% 
+  clean_names() %>% 
+  select(survived, pclass, sex, age, fare, embarked) %>% 
+  mutate(pclass = case_when(pclass == 1 ~ "First", 
+                            pclass == 2 ~ "Second",
+                            pclass == 3 ~ "Third"),
+         embarked = case_when(embarked == "S" ~ "Southampton",
+                              embarked == "C" ~ "Cherbourg",
+                              embarked == "Q" ~ "Queenstown"),
+         embarked = as.factor(embarked),
+         sex = as.factor("sex"),
+         survived = as.logical(survived))
+
+data(penguins)
+remove(penguins_raw)
+```
+
+
+

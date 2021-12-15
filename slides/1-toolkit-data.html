@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Teaching an Introductory Data Science course with tidyverse workshop</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Dr. Mine Dogucu" />
+    <meta name="date" content="2021-12-15" />
+    <script src="libs/header-attrs-2.11/header-attrs.js"></script>
+    <link rel="stylesheet" href="slide-styles.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Teaching an Introductory Data Science course with tidyverse workshop
+## Introduction to the Toolkit
+### Dr. Mine Dogucu
+### 2021-12-15
+
+---
+
+
+layout: true
+
+&lt;!-- This file by Mine Dogucu is licensed under a  Attribution-ShareAlike 2.5 Generic License (CC BY-SA 2.5) More information about the license can be found at https://creativecommons.org/licenses/by-sa/2.5/ --&gt;
+  
+&lt;div class="my-header"&gt;&lt;/div&gt;
+
+&lt;div class="my-footer"&gt; 
+ CC BY-NC-ND 4.0 &lt;a href="https://mdogucu.ics.uci.edu"&gt;Mine Dogucu&lt;/a&gt;&lt;/div&gt; 
+
+---
+
+class: middle
+
+- R &amp; RStudio
+- R Markdown 
+- Getting to know data
+- Getting to know variables
+
+---
+
+
+
+class: inverse center middle
+
+.font75[Introduction to R &amp; RStudio]
+
+---
+
+class: middle center
+
+&lt;video width="80%" height="45%%" align = "center" controls&gt;
+  &lt;source src="screencast/01a-hello-world.mp4" type="video/mp4"&gt;
+&lt;/video&gt;
+
+
+---
+
+class: inverse middle center
+
+.font100[R review]
+
+---
+
+class: middle 
+
+## Object assignment operator
+
+
+```r
+birth_year &lt;- 1950
+```
+
+
+--
+
+|                            | Windows        | Mac              |
+|----------------------------|----------------|------------------|
+| Shortcut     | Alt + -        | Option + -       |
+
+
+---
+
+class: middle
+
+## R is case-sensitive
+
+
+
+```r
+my_age &lt;- 2020 - birth_year
+
+My_age
+```
+
+```
+## Error in eval(expr, envir, enclos): object 'My_age' not found
+```
+
+--
+
+
+---
+
+
+class: middle
+
+If something comes in quotes, it is not defined in R. 
+
+
+
+```r
+ages &lt;- c(25, my_age, 32)
+
+names &lt;- c("Menglin", "Mine", "Rafael")
+
+data.frame(age = ages, name = names)
+```
+
+```
+##   age    name
+## 1  25 Menglin
+## 2  70    Mine
+## 3  32  Rafael
+```
+
+---
+
+
+## Vocabulary
+
+
+```r
+do(something)
+```
+
+`do()` is a function;   
+`something` is the argument of the function.
+--
+
+
+```r
+do(something, colorful)
+```
+
+`do()` is a function;   
+`something` is the first argument of the function;   
+`colorful` is the second argument of the function.
+
+---
+
+class: middle
+
+## Getting Help
+
+In order to get any help we can use `?` followed by function (or object) name. 
+
+
+```r
+?c
+```
+
+
+---
+
+## tidyverse_style_guide
+
+canyoureadthissentence?
+
+
+--
+    
+.pull-right[
+
+
+```r
+age &lt;- c(6, 9, 15)
+
+data.frame(age_kid = age)
+```
+
+[Tidyverse style guide link](https://style.tidyverse.org/)
+]
+
+--
+
+.pull-left[
+
+After function names do not leave any spaces.
+
+Before and after operators (e.g. &lt;-, =) leave spaces. 
+
+Put a space after a comma, **not** before. 
+
+Object names are all lower case, with words separated by an underscore.
+
+]
+
+
+
+---
+
+class: middle center
+
+
+#### RStudio Setup
+
+&lt;video width="80%" height="45%%" align = "center" controls&gt;
+  &lt;source src="screencast/01b-rstudio-setup.mp4" type="video/mp4"&gt;
+&lt;/video&gt;
+
+---
+
+
+class: inverse middle center
+
+.font150[R Markdown]
+
+---
+
+class: inverse middle center
+
+.font150[~~R~~ Markdown]
+
+---
+
+
+## markdown <svg aria-hidden="true" role="img" viewBox="0 0 640 512" style="height:1em;width:1.25em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:#4d2600;overflow:visible;position:relative;"><path d="M593.8 59.1H46.2C20.7 59.1 0 79.8 0 105.2v301.5c0 25.5 20.7 46.2 46.2 46.2h547.7c25.5 0 46.2-20.7 46.1-46.1V105.2c0-25.4-20.7-46.1-46.2-46.1zM338.5 360.6H277v-120l-61.5 76.9-61.5-76.9v120H92.3V151.4h61.5l61.5 76.9 61.5-76.9h61.5v209.2zm135.3 3.1L381.5 256H443V151.4h61.5V256H566z"/></svg>
+
+&lt;br&gt;
+
+
+
+.pull-left[
+
+```
+_Hello world_ 
+
+__Hello world__
+
+~~Hello world~~ 
+```
+]
+
+.pull-right[
+
+_Hello world_ 
+
+__Hello world__
+
+~~Hello world~~ 
+]
+---
+
+class: inverse middle
+
+.font100[<svg aria-hidden="true" role="img" viewBox="0 0 581 512" style="height:1em;width:1.13em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M581 226.6C581 119.1 450.9 32 290.5 32S0 119.1 0 226.6C0 322.4 103.3 402 239.4 418.1V480h99.1v-61.5c24.3-2.7 47.6-7.4 69.4-13.9L448 480h112l-67.4-113.7c54.5-35.4 88.4-84.9 88.4-139.7zm-466.8 14.5c0-73.5 98.9-133 220.8-133s211.9 40.7 211.9 133c0 50.1-26.5 85-70.3 106.4-2.4-1.6-4.7-2.9-6.4-3.7-10.2-5.2-27.8-10.5-27.8-10.5s86.6-6.4 86.6-92.7-90.6-87.9-90.6-87.9h-199V361c-74.1-21.5-125.2-67.1-125.2-119.9zm225.1 38.3v-55.6c57.8 0 87.8-6.8 87.8 27.3 0 36.5-38.2 28.3-87.8 28.3zm-.9 72.5H365c10.8 0 18.9 11.7 24 19.2-16.1 1.9-33 2.8-50.6 2.9v-22.1z"/></svg> = .R file]
+
+.font100[<svg aria-hidden="true" role="img" viewBox="0 0 640 512" style="height:1em;width:1.25em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M593.8 59.1H46.2C20.7 59.1 0 79.8 0 105.2v301.5c0 25.5 20.7 46.2 46.2 46.2h547.7c25.5 0 46.2-20.7 46.1-46.1V105.2c0-25.4-20.7-46.1-46.2-46.1zM338.5 360.6H277v-120l-61.5 76.9-61.5-76.9v120H92.3V151.4h61.5l61.5 76.9 61.5-76.9h61.5v209.2zm135.3 3.1L381.5 256H443V151.4h61.5V256H566z"/></svg> = .md file]
+
+.font100[<svg aria-hidden="true" role="img" viewBox="0 0 581 512" style="height:1em;width:1.13em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M581 226.6C581 119.1 450.9 32 290.5 32S0 119.1 0 226.6C0 322.4 103.3 402 239.4 418.1V480h99.1v-61.5c24.3-2.7 47.6-7.4 69.4-13.9L448 480h112l-67.4-113.7c54.5-35.4 88.4-84.9 88.4-139.7zm-466.8 14.5c0-73.5 98.9-133 220.8-133s211.9 40.7 211.9 133c0 50.1-26.5 85-70.3 106.4-2.4-1.6-4.7-2.9-6.4-3.7-10.2-5.2-27.8-10.5-27.8-10.5s86.6-6.4 86.6-92.7-90.6-87.9-90.6-87.9h-199V361c-74.1-21.5-125.2-67.1-125.2-119.9zm225.1 38.3v-55.6c57.8 0 87.8-6.8 87.8 27.3 0 36.5-38.2 28.3-87.8 28.3zm-.9 72.5H365c10.8 0 18.9 11.7 24 19.2-16.1 1.9-33 2.8-50.6 2.9v-22.1z"/></svg> + <svg aria-hidden="true" role="img" viewBox="0 0 640 512" style="height:1em;width:1.25em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:white;overflow:visible;position:relative;"><path d="M593.8 59.1H46.2C20.7 59.1 0 79.8 0 105.2v301.5c0 25.5 20.7 46.2 46.2 46.2h547.7c25.5 0 46.2-20.7 46.1-46.1V105.2c0-25.4-20.7-46.1-46.2-46.1zM338.5 360.6H277v-120l-61.5 76.9-61.5-76.9v120H92.3V151.4h61.5l61.5 76.9 61.5-76.9h61.5v209.2zm135.3 3.1L381.5 256H443V151.4h61.5V256H566z"/></svg> = .Rmd file]
+
+---
+
+class: center middle
+
+#### R Markdown
+
+
+
+&lt;video width="80%" height="45%%" align = "center" controls&gt;
+  &lt;source src="screencast/01c-intro-rmarkdown.mp4" type="video/mp4"&gt;
+&lt;/video&gt;
+
+---
+
+&lt;img src="img/rmd-parts.jpeg" width="100%" /&gt;
+
+---
+class: center middle
+
+## Add Chunk
+
+&lt;img src="img/code-chunk.png" width="50%" /&gt;
+
+---
+
+class: center middle
+
+## Run the Current Chunk
+
+&lt;img src="img/run-code.png" width="20%" /&gt;
+
+**Always** remember to run codes that I have provided for you before going over lecture notes and/or doing assignments.
+
+---
+
+class: center middle 
+
+## Knit
+
+&lt;img src="img/knit.png" width="50%" /&gt;
+
+---
+
+class: center middle 
+
+## Knit
+
+&lt;img src="img/viewer-pane.png" width="50%" /&gt;
+
+Having output documents open in viewer pane helps when teaching.
+
+---
+
+class: middle center
+
+
+## Shortcuts
+
+|                            | Windows          | Mac              |
+|----------------------------|------------------|------------------|
+| add chunk                  | Ctrl + Alt + I   | Cmd + Option + I |
+| run the current chunk      | Ctrl + Alt + C   | Cmd + Option + C |
+| run current line/selection | Ctrl + Enter     | Cmd + Return     |
+| knit                       | Ctrl + Shift + K | Cmd + Shift + K  |
+
+
+---
+
+class: middle
+
+## Slides for this workshop
+
+Slides that you are currently looking at are also written in R Markdown. 
+We will take a look at them at the end of the workshop.
+If you prepare your teaching slides with R Markdown then you will 1) get more practice with R Markdown 2) get to be a role model for your students. 
+
+---
+
+
+class: middle
+
+
+## Data Frames 
+
+
+
+
+Context: [Dear Mona, Which State Has the Worst Drivers?](https://fivethirtyeight.com/features/which-state-has-the-worst-drivers/)
+
+---
+
+class: middle
+
+## Data Frame `bad_driver`  
+
+&lt;img src="img/data-matrix.png" width="100%" /&gt;&lt;img src="img/data-matrix-tail.png" width="100%" /&gt;
+
+---
+
+class: middle
+
+## Data Frame `bad_driver`  
+
+- The data frame has 8 __variables__ (`state`, `num_drivers`, `perc_speeding`, `perc_not_distracted`, `perc_no_previous`, `insurance_premiums`, `losses`). 
+
+- The data frame has 51 __cases__. Each case represents a US state (or District of Columbia). 
+
+---
+
+class: inverse center middle
+
+.font100[functions for data frames]
+
+---
+
+class: middle
+
+
+```r
+head(bad_drivers)
+```
+
+```
+## # A tibble: 6 × 8
+##   state  num_drivers perc_speeding perc_alcohol perc_not_distra…
+##   &lt;chr&gt;        &lt;dbl&gt;         &lt;int&gt;        &lt;int&gt;            &lt;int&gt;
+## 1 Alaba…        18.8            39           30               96
+## 2 Alaska        18.1            41           25               90
+## 3 Arizo…        18.6            35           28               84
+## 4 Arkan…        22.4            18           26               94
+## 5 Calif…        12              35           28               91
+## 6 Color…        13.6            37           28               79
+## # … with 3 more variables: perc_no_previous &lt;int&gt;,
+## #   insurance_premiums &lt;dbl&gt;, losses &lt;dbl&gt;
+```
+
+---
+
+class: middle
+
+
+```r
+tail(bad_drivers)
+```
+
+```
+## # A tibble: 6 × 8
+##   state  num_drivers perc_speeding perc_alcohol perc_not_distra…
+##   &lt;chr&gt;        &lt;dbl&gt;         &lt;int&gt;        &lt;int&gt;            &lt;int&gt;
+## 1 Vermo…        13.6            30           30               96
+## 2 Virgi…        12.7            19           27               87
+## 3 Washi…        10.6            42           33               82
+## 4 West …        23.8            34           28               97
+## 5 Wisco…        13.8            36           33               39
+## 6 Wyomi…        17.4            42           32               81
+## # … with 3 more variables: perc_no_previous &lt;int&gt;,
+## #   insurance_premiums &lt;dbl&gt;, losses &lt;dbl&gt;
+```
+
+---
+
+class: middle
+
+
+```r
+glimpse(bad_drivers)
+```
+
+```
+## Rows: 51
+## Columns: 8
+## $ state               &lt;chr&gt; "Alabama", "Alaska", "Arizona", "A…
+## $ num_drivers         &lt;dbl&gt; 18.8, 18.1, 18.6, 22.4, 12.0, 13.6…
+## $ perc_speeding       &lt;int&gt; 39, 41, 35, 18, 35, 37, 46, 38, 34…
+## $ perc_alcohol        &lt;int&gt; 30, 25, 28, 26, 28, 28, 36, 30, 27…
+## $ perc_not_distracted &lt;int&gt; 96, 90, 84, 94, 91, 79, 87, 87, 10…
+## $ perc_no_previous    &lt;int&gt; 80, 94, 96, 95, 89, 95, 82, 99, 10…
+## $ insurance_premiums  &lt;dbl&gt; 784.55, 1053.48, 899.47, 827.34, 8…
+## $ losses              &lt;dbl&gt; 145.08, 133.93, 110.35, 142.39, 16…
+```
+
+---
+
+class: middle
+
+
+```r
+ncol(bad_drivers)
+```
+
+```
+## [1] 8
+```
+
+---
+
+class: middle
+
+
+```r
+nrow(bad_drivers)
+```
+
+```
+## [1] 51
+```
+
+
+
+---
+
+class: center  middle
+
+## Getting to Know the Data Frame in Action
+
+&lt;video width="80%" height="45%%" align = "center" controls&gt;
+  &lt;source src="screencast/01i-data-interface.mp4" type="video/mp4"&gt;
+&lt;/video&gt;
+
+
+---
+
+class: middle
+
+Using the starter code for this section of the workshop, can you write a sentence noting down the number of variables and number of observations in the `bad_driver` data frame?
+
+---
+
+class: middle 
+
+## Data Frame for You to Try Out `candy_rankings`
+
+&lt;img src="img/data-candy.png" width="100%" /&gt;&lt;img src="img/data-candy-tail.png" width="100%" /&gt;
+
+---
+
+class: center middle
+
+## Bob Ross
+
+&lt;iframe width="560" height="315" src="https://www.youtube.com/embed/zIbR5TAz2xQ" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen&gt;&lt;/iframe&gt;
+
+
+---
+
+class: middle
+
+
+```r
+glimpse(bob_ross)
+```
+
+```
+## Rows: 403
+## Columns: 71
+## $ episode            &lt;chr&gt; "S01E01", "S01E02", "S01E03", "S01E…
+## $ season             &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,…
+## $ episode_num        &lt;dbl&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, …
+## $ title              &lt;chr&gt; "A WALK IN THE WOODS", "MT. MCKINLE…
+## $ apple_frame        &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…
+## $ aurora_borealis    &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…
+## $ barn               &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…
+## $ beach              &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0,…
+## $ boat               &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…
+## $ bridge             &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…
+## $ building           &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…
+## $ bushes             &lt;int&gt; 1, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0,…
+## $ cabin              &lt;int&gt; 0, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0,…
+## $ cactus             &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…
+## $ circle_frame       &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…
+## $ cirrus             &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,…
+## $ cliff              &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…
+## $ clouds             &lt;int&gt; 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1,…
+## $ conifer            &lt;int&gt; 0, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1,…
+## $ cumulus            &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…
+## $ deciduous          &lt;int&gt; 1, 0, 0, 0, 1, 0, 1, 0, 0, 1, 1, 0,…
+## $ diane_andre        &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…
+## $ dock               &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…
+## $ double_oval_frame  &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…
+## $ farm               &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…
+## $ fence              &lt;int&gt; 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0,…
+## $ fire               &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…
+## $ florida_frame      &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…
+## $ flowers            &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…
+## $ fog                &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…
+## $ framed             &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…
+## $ grass              &lt;int&gt; 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…
+## $ guest              &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…
+## $ half_circle_frame  &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…
+## $ half_oval_frame    &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…
+## $ hills              &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…
+## $ lake               &lt;int&gt; 0, 0, 0, 1, 0, 1, 1, 1, 0, 1, 1, 1,…
+## $ lakes              &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…
+## $ lighthouse         &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…
+## $ mill               &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…
+## $ moon               &lt;int&gt; 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0,…
+## $ mountain           &lt;int&gt; 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1,…
+## $ mountains          &lt;int&gt; 0, 0, 1, 0, 0, 1, 1, 1, 0, 0, 0, 1,…
+## $ night              &lt;int&gt; 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0,…
+## $ ocean              &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0,…
+## $ oval_frame         &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…
+## $ palm_trees         &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…
+## $ path               &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…
+## $ person             &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…
+## $ portrait           &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…
+## $ rectangle_3d_frame &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…
+## $ rectangular_frame  &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…
+## $ river              &lt;int&gt; 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,…
+## $ rocks              &lt;int&gt; 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,…
+## $ seashell_frame     &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…
+## $ snow               &lt;int&gt; 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0,…
+## $ snowy_mountain     &lt;int&gt; 0, 1, 0, 1, 0, 1, 1, 0, 0, 0, 0, 1,…
+## $ split_frame        &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…
+## $ steve_ross         &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…
+## $ structure          &lt;int&gt; 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0,…
+## $ sun                &lt;int&gt; 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0,…
+## $ tomb_frame         &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…
+## $ tree               &lt;int&gt; 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1,…
+## $ trees              &lt;int&gt; 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1,…
+## $ triple_frame       &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…
+## $ waterfall          &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…
+## $ waves              &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…
+## $ windmill           &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…
+## $ window_frame       &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…
+## $ winter             &lt;int&gt; 0, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0,…
+## $ wood_framed        &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…
+```
+
+---
+
+class: middle
+
+class: center middle 
+
+
+##`candy_rankings` vs `bob_ross`
+
+False - 0  
+True - 1
+
+---
+
+class: middle
+
+
+
+## Variables
+
+&lt;img src="img/data-candy.png" width="100%" /&gt;&lt;img src="img/data-candy-tail.png" width="100%" /&gt;
+
+---
+
+class: middle
+
+&lt;img src="img/diagram_small.png" width="377" style="display: block; margin: auto;" /&gt;
+
+---
+
+class: middle
+
+## Variables
+
+Variables `n_kids` (number of kids), `height`, and `winpercent` are __numerical variables__. 
+
+--
+
+We can do certain analyses using these variables such as finding an average `winpercent` or the maximum or minimum `winpercent`.
+
+--
+
+Not everything represented by numbers represents a numeric quantity. e.g. Student ID, cell phone number.
+
+---
+
+class: middle
+
+## Variables
+
+Variables such as `chocolate`, `fruity`, and `class_year` (first-year, sophomore, junior, senior) are __categorical variables__. 
+
+--
+
+Categorical variables have __levels__. For instance `chocolate` and `fruity` both have two levels as `TRUE` and `FALSE` and `class_year` have four levels.
+
+---
+
+class: middle
+
+
+```r
+glimpse(candy_rankings)
+```
+
+```
+## Rows: 85
+## Columns: 6
+## $ competitorname &lt;chr&gt; "100 Grand", "3 Musketeers", "One dime"…
+## $ chocolate      &lt;lgl&gt; TRUE, TRUE, FALSE, FALSE, FALSE, TRUE, …
+## $ fruity         &lt;lgl&gt; FALSE, FALSE, FALSE, FALSE, TRUE, FALSE…
+## $ sugarpercent   &lt;dbl&gt; 0.732, 0.604, 0.011, 0.011, 0.906, 0.46…
+## $ pricepercent   &lt;dbl&gt; 0.860, 0.511, 0.116, 0.511, 0.511, 0.76…
+## $ winpercent     &lt;dbl&gt; 66.97173, 67.60294, 32.26109, 46.11650,…
+```
+
+---
+
+class: middle
+
+
+```r
+glimpse(mariokart)
+```
+
+```
+## Rows: 143
+## Columns: 12
+## $ id          &lt;dbl&gt; 150377422259, 260483376854, 320432342985, …
+## $ duration    &lt;int&gt; 3, 7, 3, 3, 1, 3, 1, 1, 3, 7, 1, 1, 1, 1, …
+## $ n_bids      &lt;int&gt; 20, 13, 16, 18, 20, 19, 13, 15, 29, 8, 15,…
+## $ cond        &lt;fct&gt; new, used, new, new, new, new, used, new, …
+## $ start_pr    &lt;dbl&gt; 0.99, 0.99, 0.99, 0.99, 0.01, 0.99, 0.01, …
+## $ ship_pr     &lt;dbl&gt; 4.00, 3.99, 3.50, 0.00, 0.00, 4.00, 0.00, …
+## $ total_pr    &lt;dbl&gt; 51.55, 37.04, 45.50, 44.00, 71.00, 45.00, …
+## $ ship_sp     &lt;fct&gt; standard, firstClass, firstClass, standard…
+## $ seller_rate &lt;int&gt; 1580, 365, 998, 7, 820, 270144, 7284, 4858…
+## $ stock_photo &lt;fct&gt; yes, yes, no, yes, yes, yes, yes, yes, yes…
+## $ wheels      &lt;int&gt; 1, 1, 1, 1, 2, 0, 0, 2, 1, 1, 2, 2, 2, 2, …
+## $ title       &lt;fct&gt; "~~ Wii MARIO KART &amp;amp; WHEEL ~ NINTENDO …
+```
+
+---
+
+
+class: middle
+
+`character`: takes string values (e.g. a person's name, address)  
+--
+
+`integer`: integer (single precision)  
+--
+
+`double`: floating decimal (double precision)   
+--
+
+`numeric`: integer or double  
+--
+
+`factor`: categorical variables with different levels  
+--
+
+`logical`: TRUE (1), FALSE (0)  
+
+---
+
+class: inverse middle
+
+As a data scientist it is .font30[**your**] job to check the type(s) of data that you are working with. Do .font30[**not**]  assume you will work with clean data frames, with clean names, labels, and types.
+
+
+---
+
+
+
+class: middle
+
+
+## Schedule for the Day
+
+__10:00 - 10:15 Introduction and Setup__  
+__10:15 - 11:15 Introduction to Toolkit and Data Basics__  
+11:20 - 12:30 Data Visualization  
+1:00 - 1:45 Data Wrangling   
+1:45 - 2:15 Packages and External Datasets  
+2:15 - 2:30 Wrap Up 
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"ratio": "16:9",
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

@@ -1,0 +1,1376 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Teaching an Introductory Data Science course with tidyverse workshop</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Dr. Mine Dogucu" />
+    <meta name="date" content="2021-12-15" />
+    <script src="libs/header-attrs-2.11/header-attrs.js"></script>
+    <link href="libs/panelset-0.2.6/panelset.css" rel="stylesheet" />
+    <script src="libs/panelset-0.2.6/panelset.js"></script>
+    <link rel="stylesheet" href="slide-styles.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Teaching an Introductory Data Science course with tidyverse workshop
+## Data Visualization
+### Dr. Mine Dogucu
+### 2021-12-15
+
+---
+
+
+layout: true
+
+&lt;!-- This file by Mine Dogucu is licensed under a  Attribution-ShareAlike 2.5 Generic License (CC BY-SA 2.5) More information about the license can be found at https://creativecommons.org/licenses/by-sa/2.5/ --&gt;
+  
+&lt;div class="my-header"&gt;&lt;/div&gt;
+
+&lt;div class="my-footer"&gt; 
+ CC BY-NC-ND 4.0 &lt;a href="https://mdogucu.ics.uci.edu"&gt;Mine Dogucu&lt;/a&gt;&lt;/div&gt; 
+
+---
+
+class: middle
+
+
+
+
+
+[How LGBTQ+ hate crime is committed by young people against young people](https://www.bbc.com/news/uk-46543874)
+
+[Why Time Flies](https://maximiliankiener.com/digitalprojects/time/)
+
+[Mandatory Paid Vacation](https://www.instagram.com/p/CE1kpM5FhWR/?utm_source=ig_web_copy_link)
+
+[Why are K-pop groups so big?](https://pudding.cool/2020/10/kpop/)
+
+---
+
+class: middle
+
+Data Visualizations
+
+- are graphical representations of data
+
+--
+
+- use different colors, shapes, and the coordinate system to summarize data
+
+--
+
+- tell a story
+
+--
+
+- are useful for exploring data
+
+
+---
+
+class: middle
+
+First I go over different types of visualizations so that students can interpret what they see in the visuals.
+
+The following is a useful resource for understanding histograms.
+
+
+[Exploring Histograms Interactively](http://tinlizzie.org/histograms/)
+
+
+
+
+---
+
+
+class: middle
+
+__gg__plot is based on __g__rammar of __g__raphics.
+
+&lt;img src="img/grammar_graphics.jpeg" width="237" /&gt;
+
+---
+
+## Data
+
+
+```r
+glimpse(titanic)
+```
+
+```
+## Rows: 891
+## Columns: 6
+## $ survived &lt;lgl&gt; FALSE, TRUE, TRUE, TRUE, FALSE, FALSE, FALSE,…
+## $ pclass   &lt;chr&gt; "Third", "First", "Third", "First", "Third", …
+## $ sex      &lt;fct&gt; sex, sex, sex, sex, sex, sex, sex, sex, sex, …
+## $ age      &lt;dbl&gt; 22, 38, 26, 35, 35, NA, 54, 2, 27, 14, 4, 58,…
+## $ fare     &lt;dbl&gt; 7.2500, 71.2833, 7.9250, 53.1000, 8.0500, 8.4…
+## $ embarked &lt;fct&gt; Southampton, Cherbourg, Southampton, Southamp…
+```
+
+.footnote[The data frame has been cleaned for you.]
+
+---
+
+class:inverse middle
+
+.font75[Visualizing a Single Categorical Variable]
+
+---
+
+class: middle
+
+.left-panel[
+&lt;br&gt;
+&lt;br&gt;
+If you could speak to R in English, how would you tell R to make this plot for you?
+
+OR
+
+If you had the data and had to draw this bar plot by hand, what would you do?
+
+]
+
+.right-panel[
+
+![](2-data-viz_files/figure-html/unnamed-chunk-4-1.png)&lt;!-- --&gt;
+]
+
+---
+
+class: middle
+
+**3 Steps of Making a Basic ggplot**
+
+1.Pick data
+
+2.Map data onto aesthetics
+
+
+3.Add the geometric layer
+
+
+
+---
+class: middle
+
+### Step 1 - Pick Data
+
+.pull-left[
+
+```r
+ggplot(data = titanic)
+```
+]
+
+.pull-right[
+
+![](2-data-viz_files/figure-html/unnamed-chunk-6-1.png)&lt;!-- --&gt;
+
+]
+
+---
+
+class: middle
+
+### Step 2 - Map Data to Aesthetics
+
+.pull-left[
+
+```r
+ggplot(data = titanic,
+*      aes(x = pclass))
+```
+]
+
+.pull-right[
+
+![](2-data-viz_files/figure-html/unnamed-chunk-8-1.png)&lt;!-- --&gt;
+
+]
+
+---
+
+class: middle
+
+### Step 3 - Add the Geometric Layer
+
+.pull-left[
+
+```r
+ggplot(data = titanic,
+       aes(x = pclass)) +
+* geom_bar()
+```
+]
+
+.pull-right[
+
+![](2-data-viz_files/figure-html/unnamed-chunk-10-1.png)&lt;!-- --&gt;
+]
+---
+
+class: middle 
+
+.panelset[
+
+.panel[
+.panel-name[Plot]
+&lt;img src="2-data-viz_files/figure-html/unnamed-chunk-11-1.png" style="display: block; margin: auto;" /&gt;
+
+]
+
+.panel[
+.panel-name[English]
+
+- Create a ggplot using the `titanic` data frame.
+- Map the `pclass` to the x-axis. 
+- Add a layer of a bar plot.
+
+]
+
+.panel[
+.panel-name[R]
+
+```r
+ggplot(data = titanic,
+       aes(x = pclass)) +
+  geom_bar()
+```
+
+]
+
+]
+---
+
+class:inverse middle
+
+.font75[Visualizing a Single Numeric Variable]
+
+---
+
+class: middle
+
+.panelset[
+
+.panel[
+.panel-name[Plot]
+
+```
+## `stat_bin()` using `bins = 30`. Pick better value with
+## `binwidth`.
+```
+
+&lt;img src="2-data-viz_files/figure-html/unnamed-chunk-13-1.png" style="display: block; margin: auto;" /&gt;
+
+]
+
+.panel[
+.panel-name[English]
+
+- Create a ggplot using the `titanic` data frame.
+- Map the `fare` to the x-axis. 
+- Add a layer of a histogram.
+
+]
+
+.panel[
+.panel-name[R]
+
+```r
+ggplot(data = titanic,
+       aes(x = fare)) +
+  geom_histogram() 
+```
+
+]
+
+]
+
+---
+class: middle
+
+### Step 1 - Pick Data
+
+.pull-left[
+
+```r
+ggplot(data = titanic)
+```
+]
+
+.pull-right[
+
+![](2-data-viz_files/figure-html/unnamed-chunk-16-1.png)&lt;!-- --&gt;
+
+]
+
+---
+
+class: middle
+
+### Step 2 - Map Data to Aesthetics
+
+.pull-left[
+
+```r
+ggplot(data = titanic,
+*      aes(x = fare))
+```
+]
+
+.pull-right[
+
+![](2-data-viz_files/figure-html/unnamed-chunk-18-1.png)&lt;!-- --&gt;
+
+]
+
+---
+
+class: middle
+
+### Step 3 - Add the Geometric Layer
+
+.pull-left[
+
+```r
+ggplot(data = titanic,
+       aes(x = fare)) +
+* geom_histogram()
+```
+]
+
+.pull-right[
+
+
+```
+## `stat_bin()` using `bins = 30`. Pick better value with
+## `binwidth`.
+```
+
+![](2-data-viz_files/figure-html/unnamed-chunk-20-1.png)&lt;!-- --&gt;
+]
+
+---
+
+## What is this warning?
+
+
+```
+## `stat_bin()` using `bins = 30`. Pick better value with
+## `binwidth`.
+```
+
+&lt;img src="2-data-viz_files/figure-html/unnamed-chunk-21-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+
+
+```r
+ggplot(data = titanic,
+       aes(x = fare)) +
+* geom_histogram(binwidth = 15)
+```
+
+&lt;img src="2-data-viz_files/figure-html/unnamed-chunk-22-1.png" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+class: middle
+
+
+.panelset[
+.panel[.panel-name[binwidth = 15]
+
+.left-panel[
+
+
+]
+
+&lt;img src="2-data-viz_files/figure-html/unnamed-chunk-23-1.png" style="display: block; margin: auto;" /&gt;
+
+]
+
+.panel[.panel-name[binwidth = 50]
+
+&lt;img src="2-data-viz_files/figure-html/unnamed-chunk-24-1.png" style="display: block; margin: auto;" /&gt;
+
+]
+
+.panel[.panel-name[binwidth = 100]
+
+&lt;img src="2-data-viz_files/figure-html/unnamed-chunk-25-1.png" style="display: block; margin: auto;" /&gt;
+
+]
+
+
+]
+
+
+---
+
+class: middle center
+
+
+.font150[
+🌈
+] 
+
+Pick your favorite color(s) from the list at:
+
+[bit.ly/colors-r](https://bit.ly/colors-r)
+
+---
+
+
+```r
+ggplot(data = titanic,
+       aes(x = fare)) +
+  geom_histogram(binwidth = 15, 
+*                color = "white")
+```
+
+&lt;img src="2-data-viz_files/figure-html/unnamed-chunk-26-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+
+```r
+ggplot(data = titanic,
+       aes(x = fare)) +
+  geom_histogram(binwidth = 15, 
+*                fill = "darkred")
+```
+
+&lt;img src="2-data-viz_files/figure-html/unnamed-chunk-27-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+
+```r
+ggplot(data = titanic,
+       aes(x = fare)) +
+  geom_histogram(binwidth = 15, 
+*                color = "white",
+*                fill = "darkred")
+```
+
+&lt;img src="2-data-viz_files/figure-html/unnamed-chunk-28-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+class: inverse middle center
+
+.font75[Visualizing Two Categorical Variables]
+
+---
+
+## Stacked Bar-Plot
+
+.pull-left[
+
+
+```r
+ggplot(data = titanic,
+       aes(x = pclass, 
+*          fill = survived)) +
+  geom_bar() 
+```
+]
+
+.pull-right[
+
+![](2-data-viz_files/figure-html/unnamed-chunk-30-1.png)&lt;!-- --&gt;
+]
+
+---
+
+## Standardized Bar Plot
+
+.pull-left[
+
+
+```r
+ggplot(data = titanic,
+       aes(x = pclass, 
+           fill = survived)) + 
+* geom_bar(position = "fill")
+```
+]
+
+.pull-right[
+
+![](2-data-viz_files/figure-html/unnamed-chunk-32-1.png)&lt;!-- --&gt;
+]
+
+.footnote[Note that y-axis is no longer count but we will learn how to change that later.]
+
+---
+
+## Dodged Bar Plot
+
+.pull-left[
+
+
+```r
+ggplot(data = titanic,
+       aes(x = pclass, 
+           fill = survived)) + 
+* geom_bar(position = "dodge")
+```
+]
+
+.pull-right[
+
+![](2-data-viz_files/figure-html/unnamed-chunk-34-1.png)&lt;!-- --&gt;
+]
+
+.footnote[Note that y-axis is no longer count but we will change that later.]
+
+
+---
+
+## New Data
+
+&lt;img src="img/penguins.png" width="667" style="display: block; margin: auto;" /&gt;
+
+.footnote[Artwork by [@allison_horst](https://twitter.com/allison_horst) ]
+
+---
+
+## New Data
+
+
+```r
+glimpse(penguins)
+```
+
+```
+## Rows: 344
+## Columns: 8
+## $ species           &lt;fct&gt; Adelie, Adelie, Adelie, Adelie, Adel…
+## $ island            &lt;fct&gt; Torgersen, Torgersen, Torgersen, Tor…
+## $ bill_length_mm    &lt;dbl&gt; 39.1, 39.5, 40.3, NA, 36.7, 39.3, 38…
+## $ bill_depth_mm     &lt;dbl&gt; 18.7, 17.4, 18.0, NA, 19.3, 20.6, 17…
+## $ flipper_length_mm &lt;int&gt; 181, 186, 195, NA, 193, 190, 181, 19…
+## $ body_mass_g       &lt;int&gt; 3750, 3800, 3250, NA, 3450, 3650, 36…
+## $ sex               &lt;fct&gt; male, female, female, NA, female, ma…
+## $ year              &lt;int&gt; 2007, 2007, 2007, 2007, 2007, 2007, …
+```
+
+---
+
+&lt;img src="img/penguin_bill.png" width="1036" style="display: block; margin: auto;" /&gt;
+
+.footnote[Artwork by [@allison_horst](https://twitter.com/allison_horst) ]
+
+
+---
+
+class: middle inverse
+
+.font75[Visualizing a single numerical and single categorical variable.]
+
+---
+
+class: middle 
+
+.panelset[
+
+.panel[
+.panel-name[Plot]
+
+```
+## Warning: Removed 2 rows containing non-finite values
+## (stat_ydensity).
+```
+
+&lt;img src="2-data-viz_files/figure-html/unnamed-chunk-38-1.png" style="display: block; margin: auto;" /&gt;
+
+]
+
+.panel[
+.panel-name[English]
+
+- Create a ggplot using the `penguins` data frame.
+- Map the `species` to the x-axis and `bill_length_mm` to the y-axis. 
+- Add a layer of a violin plot.
+
+]
+
+.panel[
+.panel-name[R]
+
+```r
+ggplot(penguins,
+       aes(x = species,
+           y = bill_length_mm))  +
+  geom_violin()
+```
+
+]
+
+]
+
+---
+
+
+class: middle 
+
+.panelset[
+
+.panel[
+.panel-name[Plot]
+
+```
+## Warning: Removed 2 rows containing non-finite values
+## (stat_boxplot).
+```
+
+&lt;img src="2-data-viz_files/figure-html/unnamed-chunk-40-1.png" style="display: block; margin: auto;" /&gt;
+
+]
+
+.panel[
+.panel-name[English]
+
+- Create a ggplot using the `penguins` data frame.
+- Map the `species` to the x-axis and `bill_length_mm` to the y-axis. 
+- Add a layer of a box plot.
+
+]
+
+.panel[
+.panel-name[R]
+
+```r
+ggplot(penguins,
+       aes(x = species,
+           y = bill_length_mm))  +
+  geom_boxplot()
+```
+
+]
+
+]
+
+
+---
+
+class: middle
+
+.pull-left[
+![](2-data-viz_files/figure-html/unnamed-chunk-42-1.png)&lt;!-- --&gt;
+
+]
+
+.pull-right[
+![](2-data-viz_files/figure-html/unnamed-chunk-43-1.png)&lt;!-- --&gt;
+]
+
+.footnote[Note: Violin plots display densities, not counts!]
+
+---
+class: inverse middle
+
+.font75[Visualizing Two Numerical Variables]
+
+---
+
+.left-panel[
+
+```r
+ggplot(penguins,
+       aes(x = bill_depth_mm,
+           y = bill_length_mm))  +
+  geom_point()
+```
+
+]
+
+.right-panel[
+
+```
+## Warning: Removed 2 rows containing missing values (geom_point).
+```
+
+![](2-data-viz_files/figure-html/unnamed-chunk-45-1.png)&lt;!-- --&gt;
+
+]
+
+---
+class: middle inverse
+
+.font75[Considering More Than Two Variables]
+
+---
+
+.left-panel[
+
+```r
+ggplot(penguins,
+       aes(x = bill_depth_mm,
+           y = bill_length_mm,
+           color = species)) +
+  geom_point()
+```
+
+]
+
+.right-panel[
+
+```
+## Warning: Removed 2 rows containing missing values (geom_point).
+```
+
+![](2-data-viz_files/figure-html/unnamed-chunk-47-1.png)&lt;!-- --&gt;
+
+]
+
+
+---
+.left-panel[
+
+```r
+ggplot(penguins,
+       aes(x = bill_depth_mm,
+           y = bill_length_mm,
+           shape = species)) +
+  geom_point()
+```
+
+]
+
+.right-panel[
+
+```
+## Warning: Removed 2 rows containing missing values (geom_point).
+```
+
+![](2-data-viz_files/figure-html/unnamed-chunk-49-1.png)&lt;!-- --&gt;
+
+]
+
+---
+
+
+
+.left-panel[
+
+```r
+ggplot(penguins,
+       aes(x = bill_depth_mm,
+           y = bill_length_mm,
+           shape = species)) +
+  geom_point()
+```
+
+]
+
+.right-panel[
+
+```
+## Warning: Removed 2 rows containing missing values (geom_point).
+```
+
+![](2-data-viz_files/figure-html/unnamed-chunk-51-1.png)&lt;!-- --&gt;
+
+]
+
+---
+
+.left-panel[
+
+```r
+ggplot(penguins,
+       aes(x = bill_depth_mm,
+           y = bill_length_mm,
+           shape = species,
+           color = species)) +
+  geom_point()
+```
+
+]
+
+.right-panel[
+
+```
+## Warning: Removed 2 rows containing missing values (geom_point).
+```
+
+![](2-data-viz_files/figure-html/unnamed-chunk-53-1.png)&lt;!-- --&gt;
+
+]
+
+
+---
+
+.left-panel[
+
+```r
+ggplot(penguins,
+       aes(x = bill_depth_mm,
+           y = bill_length_mm,
+           shape = species,
+           color = species,
+           size = body_mass_g)) +
+  geom_point()
+```
+
+]
+
+.right-panel[
+
+```
+## Warning: Removed 2 rows containing missing values (geom_point).
+```
+
+![](2-data-viz_files/figure-html/unnamed-chunk-55-1.png)&lt;!-- --&gt;
+]
+---
+
+&lt;img src="img/ggplot-summary.jpeg" width="95%" /&gt;
+
+
+---
+
+class: middle
+
+## Practice
+
+Using either the `babies`, `titanic` or `penguins` data frame ask a question that you are interested in answering. Visualize data to get a visual answer to the question. What is the visual telling you? Note all of this down in your lecture notes.
+
+---
+
+
+class: middle 
+ 
+
+.panelset[
+.panel[
+
+.panel-name[Plot]
+
+&lt;img src="2-data-viz_files/figure-html/unnamed-chunk-57-1.png" style="display: block; margin: auto;" /&gt;
+
+]
+
+.panel[
+
+.panel-name[English]
+- Using the `penguins` data,   
+- Map `bill depth` to x-axis, `bill length` to y-axis, `species` to shape and color.
+- Add a layer of points and set the size of the points to 4.
+]
+
+.panel[
+.panel-name[R]
+
+```r
+ggplot(penguins,
+       aes(x = bill_depth_mm,
+           y = bill_length_mm,
+           shape = species,
+           color = species)) +
+  geom_point(size = 4) 
+```
+
+]
+
+]
+
+
+---
+
+class: middle 
+
+## Labs
+
+
+.panelset[
+.panel[
+
+.panel-name[Plot]
+
+&lt;img src="2-data-viz_files/figure-html/unnamed-chunk-59-1.png" style="display: block; margin: auto;" /&gt;
+
+]
+
+.panel[
+
+.panel-name[English]
+- Using the `penguins` data,   
+- Map `bill depth` to x-axis, `bill length` to y-axis, `species` to shape.
+- Add a layer of points and set the size of the points to 4.
+- .highlight-text[Add labels to x-axis (Bill Depth(mm)), y-axis (Bill Length(mm)), and the title of the plot (Palmer Penguins).]
+
+
+
+.panel[
+.panel-name[R]
+
+```r
+ggplot(penguins,
+       aes(x = bill_depth_mm,
+           y = bill_length_mm,
+           shape = species,
+           color = species)) +
+  geom_point(size = 4) +
+* labs(x = "Bill Depth (mm)",
+*      y = "Bill Length (mm)",
+*      title = "Palmer Penguins")
+```
+
+]
+
+]
+
+
+
+]
+
+---
+
+class: middle
+
+.left-panel[
+
+```r
+ggplot(penguins,
+       aes(x = bill_depth_mm,
+           y = bill_length_mm,
+           shape = species,
+           color = species)) +
+  geom_point() +
+  labs(x = "Bill Depth (mm)", 
+       y = "Bill Length (mm)", 
+       title = "Palmer Penguins") +
+* theme_bw()
+```
+
+]
+
+.right-panel[
+![](2-data-viz_files/figure-html/unnamed-chunk-62-1.png)&lt;!-- --&gt;
+
+]
+
+---
+
+class: middle
+
+## Themes
+
+.panelset[
+
+
+.panel[
+
+.panel-name[`theme_gray()`]
+
+&lt;img src="2-data-viz_files/figure-html/unnamed-chunk-63-1.png" style="display: block; margin: auto;" /&gt;
+
+]
+
+.panel[
+
+.panel-name[`theme_bw()`]
+
+&lt;img src="2-data-viz_files/figure-html/unnamed-chunk-64-1.png" style="display: block; margin: auto;" /&gt;
+
+]
+
+.panel[
+
+.panel-name[`theme_classic()`]
+
+&lt;img src="2-data-viz_files/figure-html/unnamed-chunk-65-1.png" style="display: block; margin: auto;" /&gt;
+
+]
+
+.panel[
+
+.panel-name[`theme_dark()`]
+
+&lt;img src="2-data-viz_files/figure-html/unnamed-chunk-66-1.png" style="display: block; margin: auto;" /&gt;
+
+]
+
+.panel[
+.panel-name[`theme_minimal()`]
+
+&lt;img src="2-data-viz_files/figure-html/unnamed-chunk-67-1.png" style="display: block; margin: auto;" /&gt;
+
+]
+
+
+.panel[
+.panel-name[`theme_void()`]
+
+&lt;img src="2-data-viz_files/figure-html/unnamed-chunk-68-1.png" style="display: block; margin: auto;" /&gt;
+
+]
+]
+
+---
+
+class: middle 
+
+.left-panel[
+
+
+```r
+ggplot(penguins,
+       aes(x = bill_depth_mm,
+           y = bill_length_mm,
+           shape = species,
+           color = species)) +
+  geom_point() +
+  labs(x = "Bill Depth (mm)", 
+       y = "Bill Length (mm)", 
+       title = "Palmer Penguins") +
+  theme_bw() +
+* theme(text = element_text(size=20))
+```
+
+]
+
+.right-panel[
+
+![](2-data-viz_files/figure-html/unnamed-chunk-70-1.png)&lt;!-- --&gt;
+]
+
+
+---
+
+class: middle
+
+
+```r
+?theme
+```
+
+
+---
+
+class: middle 
+ 
+
+.left-panel[
+
+
+```r
+ggplot(penguins,
+       aes(x = bill_depth_mm,
+           y = bill_length_mm,
+           shape = species,
+           color = species)) +
+  geom_point(size = 4) +
+* facet_grid(.~species)
+```
+
+]
+
+.right-panel[
+&lt;img src="2-data-viz_files/figure-html/unnamed-chunk-73-1.png" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+class: middle 
+ 
+
+.left-panel[
+
+
+```r
+ggplot(penguins,
+       aes(x = bill_depth_mm,
+           y = bill_length_mm,
+           shape = species,
+           color = species)) +
+  geom_point(size = 4) +
+* facet_grid(species~.)
+```
+
+]
+
+.right-panel[
+&lt;img src="2-data-viz_files/figure-html/unnamed-chunk-75-1.png" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+class: middle
+
+.left-panel[
+
+```r
+ggplot(penguins,
+       aes(x = bill_depth_mm,
+           y = bill_length_mm)) +
+  geom_point() +
+* xlim(0, 30) +
+* ylim(0,70)
+```
+
+]
+
+.right-panel[
+![](2-data-viz_files/figure-html/unnamed-chunk-77-1.png)&lt;!-- --&gt;
+
+]
+
+
+---
+
+class: middle
+
+## code style
+
+[The tidyverse style guide](https://style.tidyverse.org/ggplot2.html) has the following convention for writing ggplot2 code.
+
+The plus sign for adding layers `+` always has a space before it and is followed by a new line. 
+
+The new line is indented by two spaces. RStudio does this automatically for you. 
+
+---
+class: middle
+
+[Top Ten Dos and Don't for Charts and Graphs](https://guides.lib.uci.edu/datavis/do)
+
+---
+
+class: middle
+
+Check out [the ggplot flipbook](https://evamaerey.github.io/ggplot_flipbook/ggplot_flipbook_xaringan.html#1) for some inspiration. 
+Find your favorite new function/feature. 
+Share it with your neighbor.
+
+
+---
+
+class: middle 
+
+## ggplot extensions
+
+- [`patchwork`](https://patchwork.data-imaginist.com/) combining plots into a single plot
+- [`gganimate`](https://gganimate.com/) animated graphics
+- [`ggthemes`](https://rafalab.github.io/dsbook/ggplot2.html#add-on-packages) additional set of themes
+- [`ggtext`](https://wilkelab.org/ggtext/) improved text rendering support for ggplot2
+
+There are [more extensions](https://exts.ggplot2.tidyverse.org/gallery/)
+
+
+---
+
+class: middle 
+
+## Detour: R Markdown chunk options
+
+```{r, echo=TRUE, message=FALSE}
+```
+---
+
+
+class: center middle 
+
+## (some) Chunk Options in R Markdown
+
+&lt;table align = "center"&gt;
+
+&lt;tr&gt;
+
+&lt;td&gt;echo = FALSE&lt;/td&gt;
+&lt;td&gt;hides the code&lt;/td&gt;
+
+&lt;/tr&gt;
+
+&lt;tr&gt;
+
+&lt;td&gt;message = FALSE&lt;/td&gt;
+&lt;td&gt;hides messages&lt;/td&gt;
+
+&lt;/tr&gt;
+
+&lt;tr&gt;
+
+&lt;td&gt;warning = FALSE&lt;/td&gt;
+&lt;td&gt;hides warning&lt;/td&gt;
+
+&lt;/tr&gt;
+
+&lt;tr&gt;
+
+&lt;td&gt;error = TRUE&lt;/td&gt;
+&lt;td&gt;renders despite errors and displays the error&lt;/td&gt;
+
+&lt;/tr&gt;
+
+&lt;tr&gt;
+
+&lt;td&gt;fig.cap = "Some figure caption"&lt;/td&gt;
+&lt;td&gt;creates a figure caption&lt;/td&gt;
+
+&lt;/tr&gt;
+
+&lt;tr&gt;
+
+&lt;td&gt;fig.alt = "Some alternate text for figure"&lt;/td&gt;
+&lt;td&gt;creates alternate text for figures&lt;/td&gt;
+
+&lt;/tr&gt;
+
+
+
+&lt;/table&gt;
+
+
+
+
+
+
+
+
+---
+
+class: middle
+
+
+## Schedule for the Day
+
+__10:00 - 10:15 Introduction and Setup__  
+__10:15 - 11:15 Introduction to Toolkit and Data Basics__  
+__11:20 - 12:30 Data Visualization__  
+1:00 - 1:45 Data Wrangling   
+1:45 - 2:15 Packages and External Datasets
+2:15 - 2:30 Wrap Up 
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"ratio": "16:9",
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

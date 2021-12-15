@@ -1,0 +1,24 @@
+.list-group-item.active, 
+.list-group-item.active:focus, 
+.list-group-item.active:hover {
+    background-color: #b0a160; }
+    
+ul {
+    list-style-type: square;
+    
+}
+
+a{
+  font-weight: bold;
+  color:#7b7043;
+  text-decoration: underline;
+  
+}
+
+p,h1,h2,h3 {
+  color:#464026;
+}
+
+h1 {
+  color: #34301C;
+}

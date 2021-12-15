@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Teaching an Introductory Data Science course with tidyverse workshop</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Dr. Mine Dogucu" />
+    <meta name="date" content="2021-12-15" />
+    <script src="libs/header-attrs-2.11/header-attrs.js"></script>
+    <link rel="stylesheet" href="slide-styles.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Teaching an Introductory Data Science course with tidyverse workshop
+## Packages and External Datasets
+### Dr. Mine Dogucu
+### 2021-12-15
+
+---
+
+
+
+layout: true
+
+&lt;!-- This file by Mine Dogucu is licensed under a  Attribution-ShareAlike 2.5 Generic License (CC BY-SA 2.5) More information about the license can be found at https://creativecommons.org/licenses/by-sa/2.5/ --&gt;
+  
+&lt;div class="my-header"&gt;&lt;/div&gt;
+
+&lt;div class="my-footer"&gt; 
+ CC BY-NC-ND 4.0 &lt;a href="https://mdogucu.ics.uci.edu"&gt;Mine Dogucu&lt;/a&gt;&lt;/div&gt; 
+
+---
+
+
+
+
+class: middle
+
+## Goals
+
+- R packages
+- Importing Data
+- Projects Workflow
+
+---
+
+class: center middle inverse
+
+.font50[Naming files]
+
+---
+class: middle center
+
+.pull-left[
+
+__Default__
+
+&lt;img src="img/office-suite-default.png" width="60%" /&gt;
+
+]
+
+.footnote[Microsoft products have Copyright. Images used based on [fair use](https://www.microsoft.com/en-us/legal/copyright/default.aspx) for educational purposes.]
+
+.pull-right[
+
+__Optional__
+
+&lt;img src="img/office-suite-optional.png" width="60%" /&gt;
+
+
+]
+
+---
+class: middle
+
+## R packages
+
+
+When you download R, you actually download base R. 
+
+--
+
+But there are MANY optional packages you can download.
+
+
+---
+
+class: middle
+
+
+## R packages
+
+There are more than 15000 R packages. 
+
+--
+
+Good part: There is an R package for (almost) everything, from complex statistical modeling packages to baby names.
+
+--
+
+Bad part: At the beginning it can feel overwhelming. 
+
+---
+
+class: middle 
+
+## R packages
+
+All this time we have actually been using R packages. 
+
+---
+
+class: middle 
+
+## R packages
+
+What do R packages have? All sorts of things but mainly
+
+- functions 
+
+- datasets
+
+---
+
+class: middle
+
+## R packages
+
+Try running the following code:
+
+
+```r
+beep()
+```
+
+```
+## Error in beep(): could not find function "beep"
+```
+
+Why are we seeing this error? 
+
+---
+
+class:inverse middle
+
+.font75[Installing packages]
+
+---
+
+## Using `install.packages()`
+
+In your **Console**, install the beepr package
+
+
+```r
+install.packages("beepr")
+```
+
+We do this in the Console because we only need to do it once.
+
+---
+
+## Using Packages pane
+
+&lt;img src="img/packages-pane.png" width="40%" style="display: block; margin: auto;" /&gt;
+
+Packages Pane &gt; Install 
+
+---
+
+## Letting RStudio Install
+
+&lt;img src="img/rstudio-install.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+If you save your file and using a package RStudio will tell you that you have not installed the package.
+
+---
+
+class:inverse middle
+
+.font75[Using packages]
+
+---
+
+## Using beep() from beepr
+
+.pull-left[
+Option 1
+
+```r
+library(beepr)
+beep()
+```
+
+More common usage. 
+Useful if you are going to use multiple functions from the same package.
+E.g. we have used many functions (ggplot, aes, geom_...) from the ggplot2 package. In such cases, usual practice is to put the library name in the first R chunk in the .Rmd file.
+
+]
+
+.pull-right[
+Option 2
+
+```r
+beepr::beep()
+```
+Useful when you are going to use a function once or few times. Also useful if there are any conflicts. For instance if there is some other package in your environment that has a beep() function that prints the word beep, you would want to distinguish the beep function from the beepr package and the beep function from the other imaginary package. 
+]
+
+---
+
+&lt;img src="img/beep-help.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+class: middle
+
+## Open Source
+
+Any one around the world can create R packages. 
+
+--
+
+Good part: We are able to do pretty much anything R because someone from around the world has developed the package and shared it. 
+
+--
+
+Bad part: The language can be inconsistent. 
+
+--
+
+Good news: We have tidyverse. 
+
+
+---
+
+## Tidyverse
+
+
+&gt;The tidyverse is an opinionated collection of R packages designed for data science. All packages share an underlying design philosophy, grammar, and data structures. 
+                  tidyverse.org
+---
+
+## Tidyverse
+
+In short, tidyverse is a family of packages. From practical stand point, you can install many tidyverse packages at once (and you did this). By doing that you installed all the following packages.
+
+- ggplot2
+- dplyr
+- tidyr
+- readr
+- purrr
+- tibble
+- stringr
+- forcats
+
+---
+
+class: middle 
+
+We can also load the tidyverse packages all at the same time.
+
+
+```r
+library(tidyverse)
+```
+
+---
+
+## Fun fact
+
+.left-panel[
+
+```r
+library(magrittr)
+```
+
+&lt;img src="img/pipe-logo.png" width="40%" style="display: block; margin: auto;" /&gt;
+]
+
+.right-panel[
+[Treachery of Images](https://en.wikipedia.org/wiki/The_Treachery_of_Images#/media/File:MagrittePipe.jpg) by René Magritte
+
+&lt;img src="img/magritte.jpg" width="70%" style="display: block; margin: auto;" /&gt;
+
+.footnote[Image for Treachery of Images is from University of Alabama [website](https://tcf.ua.edu/Classes/Jbutler/T311/Modernism.htm) and used under fair use for educational purposes.]
+]
+
+
+---
+
+
+class: center middle inverse
+
+.font50[Naming files]
+
+---
+
+class: middle
+
+Three principles of naming files 
+
+- machine readable
+- human readable
+- plays well with default ordering (e.g. alphabetical and numerical ordering)
+
+(Jenny Bryan)
+
+for the purposes of this class an additional principle is that file names follow
+
+- tidyverse style (all lower case letters, words separated by HYPHEN)
+
+---
+
+class: center middle inverse
+
+.font50[README.md]
+
+---
+
+class: middle
+
+- README file is the first file users read. In our case a user might be our future self, a teammate, or (if open source) anyone.
+
+--
+
+- There can be multiple README files within a single directory: e.g. for the general project folder and then for a data subfolder. Data folder README's can possibly contain codebook (data dictionary).
+
+--
+
+- It should be brief but detailed enough to help user navigate. 
+
+--
+
+- a README should be up-to-date (e.g. from proposal to presentation stage of final projects they need to be updated).
+
+--
+
+- On GitHub we use markdown for README file (`README.md`). Good news: [emojis are supported.](https://gist.github.com/rxaviers/7360908)
+
+---
+
+class: middle
+
+## README examples
+
+- [ICS 80 website](https://github.com/ics80-fa21/website)
+- [Museum of Modern Art Collection](https://github.com/MuseumofModernArt/collection)
+- [R package bayesrules](https://github.com/bayes-rules/bayesrules)
+
+---
+
+class: center middle inverse
+
+.font50[Importing data]
+
+---
+
+class: middle
+
+## Importing .csv Data 
+
+
+
+```r
+readr::read_csv("dataset.csv")
+```
+
+---
+
+class: middle
+
+## Importing Excel Data
+
+
+```r
+readxl::read_excel("dataset.xlsx")
+```
+
+ 
+
+---
+
+class: middle
+
+
+## Importing Excel Data
+
+
+```r
+readxl::read_excel("dataset.xlsx", sheet = 2)
+```
+
+---
+
+class: middle
+
+## Importing SAS, SPSS, Stata Data
+
+
+```r
+library(haven)
+# SAS
+read_sas("dataset.sas7bdat")
+# SPSS
+read_sav("dataset.sav")
+# Stata
+read_dta("dataset.dta")
+```
+
+
+---
+
+## Where is the dataset file?
+
+Importing data will depend on where the dataset is on your computer. However we use the help of `here::here()` function. 
+This function sets the working directory to the project folder (i.e. where the `.Rproj` file is).
+
+
+```r
+read_csv(here::here("data/dataset.csv"))
+```
+
+
+---
+
+class: middle
+
+
+## Schedule for the Day
+
+__10:00 - 10:15 Introduction and Setup__  
+10:15 - 11:15 Introduction to Toolkit and Data Basics
+11:20 - 12:30 Data Visualization  
+1:00 - 1:45 Data Wrangling   
+1:45 - 2:15 Packages and External Datasets
+__2:15 - 2:30 Wrap Up__
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"ratio": "16:9",
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

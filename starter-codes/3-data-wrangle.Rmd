@@ -1,0 +1,54 @@
+---
+title: "Data Wrangling"
+author: "Mine Dogucu"
+date: "12/14/2021"
+output: html_document
+---
+
+<!--Note down your name and correct date in the YAML part-->
+
+```{r echo = FALSE, message=FALSE, warning = FALSE}
+library(tidyverse)
+library(janitor)
+library(titanic)
+titanic <- titanic_train
+```
+
+```{r echo = FALSE, message = FALSE}
+lapd <- read_csv(here::here("starter-codes/data/Police_Payroll.csv")) 
+```
+
+
+## Part I (code along)
+
+
+
+## Part II (If we have time)
+
+### Question 1 - Variable Names
+
+Make sure variable names adhere to tidyverse style. 
+Do not forget to save the changes to the `titanic` data frame so that you can use cleaner names moving forward.
+
+### Question 2 - Subsetting Data
+
+What are the names of passengers who have survived, were male, older than 18 years, embarked Titanic in Cherbourg and were traveling in the first class?
+
+
+### Question 3 - Visualization
+
+Are there any differences in the amount of fare paid depending on ticket's class? First, second, third? Answer this question with a visual. Are you running into an obstacle? Why do you think it is happening?
+
+### Question 4 - Changing Variable Type
+
+During first week, you had to decide what type of variables the `titanic` should have. Now is the time to make these changes. For each variable, decide whether its type is correct. If it is not then change the variable type. Make sure that you save your data frame titanic at the end so that moving forward `titanic` would have the correct variable types.
+
+### Question 5 - Creating a New Variable
+
+Create a new variable called `child`. If a person is less than 18 years the variable `child` should have a value of `TRUE`, if a person is 18 years old or older than the variable `child` should have a value of `FALSE`. Make sure not to use quotations around TRUE or FALSE. These are values known to R. If you use quotes R would make child be a character variable. If you do not use quotes then it would be a logical variable as it should be.
+Count how many children were on board after creating the `child variable`?
+
+
+### Question 6 - Aggregating Data
+
+What is the mean and median `fare` paid? What is the mean and median `fare` paid for each passenger class?  

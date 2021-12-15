@@ -1,0 +1,44 @@
+---
+title: "Introduction to Toolkit and Data Basics"
+author: "Mine Dogucu"
+date: "12/14/2021"
+output: html_document
+---
+
+<!--Note down your name and correct date in the YAML part-->
+
+## R code vs. Text
+
+Add any text below this line
+
+
+
+
+## Defining Objects
+
+
+
+
+
+## Errors
+
+
+
+
+## Getting to Know the Data
+
+Run the code chunk below. 
+
+<!--Note that normally this code will be at the top of the document-->
+
+```{r echo = FALSE, message=FALSE}
+library(tidyverse)
+library(fivethirtyeight)
+data(bad_drivers)
+data(candy_rankings)
+data(bob_ross)
+data(mariokart)
+```
+
+Add code chunk below and then glimpse at the data!
+

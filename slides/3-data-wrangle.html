@@ -1,0 +1,1683 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Teaching an Introductory Data Science course with tidyverse workshop</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Dr. Mine Dogucu" />
+    <meta name="date" content="2021-12-15" />
+    <script src="libs/header-attrs-2.11/header-attrs.js"></script>
+    <link rel="stylesheet" href="slide-styles.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Teaching an Introductory Data Science course with tidyverse workshop
+## Data Wrangling
+### Dr. Mine Dogucu
+### 2021-12-15
+
+---
+
+
+
+layout: true
+
+&lt;!-- This file by Mine Dogucu is licensed under a  Attribution-ShareAlike 2.5 Generic License (CC BY-SA 2.5) More information about the license can be found at https://creativecommons.org/licenses/by-sa/2.5/ --&gt;
+  
+&lt;div class="my-header"&gt;&lt;/div&gt;
+
+&lt;div class="my-footer"&gt; 
+ CC BY-NC-ND 4.0 &lt;a href="https://mdogucu.ics.uci.edu"&gt;Mine Dogucu&lt;/a&gt;&lt;/div&gt; 
+
+---
+
+class: middle
+
+
+
+
+
+
+
+## Goals
+
+- The pipe operator
+- Subsetting data frames
+- Changing variables
+- Aggregating Data
+
+
+---
+
+
+class: inverse middle
+
+.font50[Three solutions to a single problem]
+
+---
+
+class: middle
+
+What is the average of 4, 8, 16 approximately?
+
+---
+
+class: middle
+
+1.What is the average of **4, 8, 16** approximately?
+
+---
+
+class: middle
+
+2.What is the **average** of 4, 8, 16 approximately?
+
+---
+
+class: middle
+
+3.What is the average of 4, 8, 16 **approximately**?
+
+---
+
+class: middle inverse
+
+.font50[Solution 1: Functions within Functions]
+
+---
+
+
+```r
+c(4, 8, 16)
+```
+
+```
+## [1]  4  8 16
+```
+
+--
+
+&lt;hr&gt;
+
+
+```r
+mean(c(4, 8, 16))
+```
+
+```
+## [1] 9.333333
+```
+
+--
+
+&lt;hr&gt;
+
+
+```r
+round(mean(c(4, 8, 16)))
+```
+
+```
+## [1] 9
+```
+
+---
+
+class: middle
+
+**Problem with writing functions within functions**
+
+Things will get messy and more difficult to read and debug as we deal with more complex operations on data.
+
+---
+
+class: middle inverse
+
+.font50[Solution 2: Creating Objects]
+
+---
+
+class: middle
+
+
+```r
+numbers &lt;- c(4, 8, 16)
+numbers
+```
+
+```
+## [1]  4  8 16
+```
+
+--
+
+&lt;hr&gt;
+
+
+```r
+avg_number &lt;- mean(numbers)
+avg_number
+```
+
+```
+## [1] 9.333333
+```
+
+--
+
+&lt;hr&gt;
+
+
+```r
+round(avg_number)
+```
+
+```
+## [1] 9
+```
+
+---
+
+class: middle
+
+**Problem with creating many objects**
+
+We will end up with too many objects in `Environment`. 
+
+---
+
+class: middle inverse
+
+.font50[Solution 3: The (forward) Pipe Operator %&gt;% ]
+
+---
+
+class: middle
+
+.font75[Shortcut: &lt;br&gt;Ctrl (Command) + Shift + M]
+
+---
+class: middle
+
+.pull-left[
+
+```r
+c(4, 8, 16) %&gt;% 
+  mean() %&gt;% 
+  round()
+```
+
+```
+## [1] 9
+```
+]
+
+.pull-right[
+
+Combine 4, 8, and 16 `and then`  
+Take the mean   `and then`  
+Round the output
+
+]
+
+
+
+
+---
+
+class: middle
+
+The output of the first function is the first argument of the second function.
+
+---
+
+Do you recall composite functions such as `\(f \circ g(x)\)`?
+
+--
+
+Now we have `\(f \circ g \circ h (x)\)` or `round(mean(c(4, 8, 16)))`
+
+--
+
+.pull-left[
+
+
+```r
+h(x) %&gt;% 
+  g() %&gt;% 
+  f()
+```
+
+]
+
+.pull-right[
+
+
+```r
+c(4, 8, 16) %&gt;% 
+  mean() %&gt;% 
+  round()
+```
+
+]
+
+---
+
+class: middle inverse
+
+.font50[Subsetting data frames]
+
+---
+
+
+
+
+
+
+```r
+glimpse(lapd)
+```
+
+```
+## Rows: 68,564
+## Columns: 35
+## $ `Row ID`                       &lt;chr&gt; "3-1000027830ctFu", "3-…
+## $ Year                           &lt;dbl&gt; 2013, 2013, 2013, 2013,…
+## $ `Department Title`             &lt;chr&gt; "Police (LAPD)", "Polic…
+## $ `Payroll Department`           &lt;dbl&gt; 4301, 4302, 4301, 4301,…
+## $ `Record Number`                &lt;dbl&gt; 1000027830, 1000155488,…
+## $ `Job Class Title`              &lt;chr&gt; "Police Detective II", …
+## $ `Employment Type`              &lt;chr&gt; "Full Time", "Full Time…
+## $ `Hourly or Event Rate`         &lt;dbl&gt; 53.16, 23.77, 60.80, 60…
+## $ `Projected Annual Salary`      &lt;dbl&gt; 110998.08, 49623.67, 12…
+## $ `Q1 Payments`                  &lt;dbl&gt; 24931.20, 11343.96, 241…
+## $ `Q2 Payments`                  &lt;dbl&gt; 29181.61, 13212.37, 283…
+## $ `Q3 Payments`                  &lt;dbl&gt; 26545.80, 11508.36, 287…
+## $ `Q4 Payments`                  &lt;dbl&gt; 29605.30, 13442.53, 332…
+## $ `Payments Over Base Pay`       &lt;dbl&gt; 4499.12, 1844.82, 13192…
+## $ `% Over Base Pay`              &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0,…
+## $ `Total Payments`               &lt;dbl&gt; 110263.91, 49507.22, 11…
+## $ `Base Pay`                     &lt;dbl&gt; 105764.79, 47662.40, 10…
+## $ `Permanent Bonus Pay`          &lt;dbl&gt; 3174.12, 0.00, 7363.95,…
+## $ `Longevity Bonus Pay`          &lt;dbl&gt; 0.00, 1310.82, 0.00, 0.…
+## $ `Temporary Bonus Pay`          &lt;dbl&gt; 1325.00, 0.00, 1205.00,…
+## $ `Lump Sum Pay`                 &lt;dbl&gt; 0.00, 0.00, 2133.18, 0.…
+## $ `Overtime Pay`                 &lt;dbl&gt; 0.00, 0.00, 4424.32, 98…
+## $ `Other Pay &amp; Adjustments`      &lt;dbl&gt; 0.00, 534.00, -1934.02,…
+## $ `Other Pay (Payroll Explorer)` &lt;dbl&gt; 4499.12, 1844.82, 8768.…
+## $ MOU                            &lt;chr&gt; "24", "3", "24", "24", …
+## $ `MOU Title`                    &lt;chr&gt; "POLICE OFFICERS UNIT",…
+## $ `FMS Department`               &lt;dbl&gt; 70, 70, 70, 70, 70, 70,…
+## $ `Job Class`                    &lt;chr&gt; "2223", "1358", "2227",…
+## $ `Pay Grade`                    &lt;chr&gt; "2", "0", "1", "1", "0"…
+## $ `Average Health Cost`          &lt;dbl&gt; 11651.40, 10710.24, 116…
+## $ `Average Dental Cost`          &lt;dbl&gt; 898.08, 405.24, 898.08,…
+## $ `Average Basic Life`           &lt;dbl&gt; 191.04, 11.40, 191.04, …
+## $ `Average Benefit Cost`         &lt;dbl&gt; 12740.52, 11126.88, 127…
+## $ `Benefits Plan`                &lt;chr&gt; "Police", "City", "Poli…
+## $ `Job Class Link`               &lt;chr&gt; "http://per.lacity.org/…
+```
+
+---
+
+Before we work with this data it is a good idea to change variable names to tidy style.
+
+
+```r
+lapd &lt;- clean_names(lapd)
+glimpse(lapd)
+```
+
+```
+## Rows: 68,564
+## Columns: 35
+## $ row_id                     &lt;chr&gt; "3-1000027830ctFu", "3-1000…
+## $ year                       &lt;dbl&gt; 2013, 2013, 2013, 2013, 201…
+## $ department_title           &lt;chr&gt; "Police (LAPD)", "Police (L…
+## $ payroll_department         &lt;dbl&gt; 4301, 4302, 4301, 4301, 430…
+## $ record_number              &lt;dbl&gt; 1000027830, 1000155488, 100…
+## $ job_class_title            &lt;chr&gt; "Police Detective II", "Cle…
+## $ employment_type            &lt;chr&gt; "Full Time", "Full Time", "…
+## $ hourly_or_event_rate       &lt;dbl&gt; 53.16, 23.77, 60.80, 60.98,…
+## $ projected_annual_salary    &lt;dbl&gt; 110998.08, 49623.67, 126950…
+## $ q1_payments                &lt;dbl&gt; 24931.20, 11343.96, 24184.0…
+## $ q2_payments                &lt;dbl&gt; 29181.61, 13212.37, 28327.2…
+## $ q3_payments                &lt;dbl&gt; 26545.80, 11508.36, 28744.2…
+## $ q4_payments                &lt;dbl&gt; 29605.30, 13442.53, 33224.8…
+## $ payments_over_base_pay     &lt;dbl&gt; 4499.12, 1844.82, 13192.43,…
+## $ percent_over_base_pay      &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, …
+## $ total_payments             &lt;dbl&gt; 110263.91, 49507.22, 114480…
+## $ base_pay                   &lt;dbl&gt; 105764.79, 47662.40, 101287…
+## $ permanent_bonus_pay        &lt;dbl&gt; 3174.12, 0.00, 7363.95, 708…
+## $ longevity_bonus_pay        &lt;dbl&gt; 0.00, 1310.82, 0.00, 0.00, …
+## $ temporary_bonus_pay        &lt;dbl&gt; 1325.00, 0.00, 1205.00, 132…
+## $ lump_sum_pay               &lt;dbl&gt; 0.00, 0.00, 2133.18, 0.00, …
+## $ overtime_pay               &lt;dbl&gt; 0.00, 0.00, 4424.32, 9839.3…
+## $ other_pay_adjustments      &lt;dbl&gt; 0.00, 534.00, -1934.02, -21…
+## $ other_pay_payroll_explorer &lt;dbl&gt; 4499.12, 1844.82, 8768.11, …
+## $ mou                        &lt;chr&gt; "24", "3", "24", "24", "12"…
+## $ mou_title                  &lt;chr&gt; "POLICE OFFICERS UNIT", "CL…
+## $ fms_department             &lt;dbl&gt; 70, 70, 70, 70, 70, 70, 70,…
+## $ job_class                  &lt;chr&gt; "2223", "1358", "2227", "22…
+## $ pay_grade                  &lt;chr&gt; "2", "0", "1", "1", "0", "2…
+## $ average_health_cost        &lt;dbl&gt; 11651.40, 10710.24, 11651.4…
+## $ average_dental_cost        &lt;dbl&gt; 898.08, 405.24, 898.08, 898…
+## $ average_basic_life         &lt;dbl&gt; 191.04, 11.40, 191.04, 191.…
+## $ average_benefit_cost       &lt;dbl&gt; 12740.52, 11126.88, 12740.5…
+## $ benefits_plan              &lt;chr&gt; "Police", "City", "Police",…
+## $ job_class_link             &lt;chr&gt; "http://per.lacity.org/pers…
+```
+
+
+---
+
+class: middle 
+
+## subsetting variables/columns
+
+&lt;img src="img/data-wrangle.001.jpeg" width="80%" /&gt;
+
+--
+
+`select()`
+
+---
+
+class: middle 
+
+## subsetting observations/rows
+
+&lt;img src="img/data-wrangle.002.jpeg" width="80%" /&gt;
+
+`slice()` and `filter()` 
+
+---
+
+`select` is used to select certain variables in the data frame. 
+
+
+.left-panel[
+
+```r
+select(lapd, year, base_pay)
+```
+
+```
+## # A tibble: 68,564 × 2
+##     year base_pay
+##    &lt;dbl&gt;    &lt;dbl&gt;
+##  1  2013  105765.
+##  2  2013   47662.
+##  3  2013  101288.
+##  4  2013  118087.
+##  5  2013   90322.
+##  6  2013   62770.
+##  7  2013   93718.
+##  8  2013       0 
+##  9  2013   51246.
+## 10  2013   74227.
+## # … with 68,554 more rows
+```
+]
+
+--
+
+.right-panel[
+
+
+```r
+lapd %&gt;% 
+  select(year, base_pay)
+```
+
+```
+## # A tibble: 68,564 × 2
+##     year base_pay
+##    &lt;dbl&gt;    &lt;dbl&gt;
+##  1  2013  105765.
+##  2  2013   47662.
+##  3  2013  101288.
+##  4  2013  118087.
+##  5  2013   90322.
+##  6  2013   62770.
+##  7  2013   93718.
+##  8  2013       0 
+##  9  2013   51246.
+## 10  2013   74227.
+## # … with 68,554 more rows
+```
+
+]
+
+---
+
+`select` can also be used to drop certain variables if used with a negative sign.
+
+
+```r
+select(lapd, -row_id, -department_title)
+```
+
+```
+## # A tibble: 68,564 × 33
+##     year payroll_department record_number job_class_title       
+##    &lt;dbl&gt;              &lt;dbl&gt;         &lt;dbl&gt; &lt;chr&gt;                 
+##  1  2013               4301    1000027830 Police Detective II   
+##  2  2013               4302    1000155488 Clerk Typist          
+##  3  2013               4301    1000194958 Police Sergeant I     
+##  4  2013               4301    1000232317 Police Lieutenant I   
+##  5  2013               4302    1000329284 Principal Storekeeper 
+##  6  2013               4302    1001124320 Police Service Repres…
+##  7  2013               4301    1001221822 Police Officer III    
+##  8  2013               4301    1001243583 Police Sergeant I     
+##  9  2013               4301    1001317832 Police Officer II     
+## 10  2013               4301     100162910 Police Officer II     
+## # … with 68,554 more rows, and 29 more variables:
+## #   employment_type &lt;chr&gt;, hourly_or_event_rate &lt;dbl&gt;,
+## #   projected_annual_salary &lt;dbl&gt;, q1_payments &lt;dbl&gt;,
+## #   q2_payments &lt;dbl&gt;, q3_payments &lt;dbl&gt;, q4_payments &lt;dbl&gt;,
+## #   payments_over_base_pay &lt;dbl&gt;, percent_over_base_pay &lt;dbl&gt;,
+## #   total_payments &lt;dbl&gt;, base_pay &lt;dbl&gt;,
+## #   permanent_bonus_pay &lt;dbl&gt;, longevity_bonus_pay &lt;dbl&gt;, …
+```
+
+---
+
+class: middle 
+
+## Selection helpers
+
+`starts_with()`  
+`ends_with()`  
+`contains()`  
+
+---
+
+
+```r
+select(lapd, starts_with("q"))
+```
+
+```
+## # A tibble: 68,564 × 4
+##    q1_payments q2_payments q3_payments q4_payments
+##          &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;
+##  1      24931.      29182.      26546.      29605.
+##  2      11344.      13212.      11508.      13443.
+##  3      24184       28327.      28744.      33225.
+##  4      29391.      36591.      32905.      37234.
+##  5      20813       24136       21518.      25231.
+##  6      16057.      17927.      14150.      17052.
+##  7      22162.      25664.      23404.      24586.
+##  8          0           0         331.          0 
+##  9      11941.      14330.      13404.      14537.
+## 10      17046.      20457.      18777.      21371.
+## # … with 68,554 more rows
+```
+
+---
+
+
+```r
+select(lapd, ends_with("pay"))
+```
+
+```
+## # A tibble: 68,564 × 8
+##    payments_over_ba… percent_over_bas… base_pay permanent_bonus…
+##                &lt;dbl&gt;             &lt;dbl&gt;    &lt;dbl&gt;            &lt;dbl&gt;
+##  1             4499.                 0  105765.            3174.
+##  2             1845.                 0   47662.               0 
+##  3            13192.                 0  101288.            7364.
+##  4            18035.                 0  118087.            7087.
+##  5             1376.                 0   90322.               0 
+##  6             2415.                 0   62770.               0 
+##  7             2099.                 0   93718.             866.
+##  8              331.                 0       0                0 
+##  9             2967.                 0   51246.            1540.
+## 10             3424.                 0   74227.            2233.
+## # … with 68,554 more rows, and 4 more variables:
+## #   longevity_bonus_pay &lt;dbl&gt;, temporary_bonus_pay &lt;dbl&gt;,
+## #   lump_sum_pay &lt;dbl&gt;, overtime_pay &lt;dbl&gt;
+```
+
+---
+
+
+```r
+select(lapd, contains("pay"))
+```
+
+```
+## # A tibble: 68,564 × 17
+##    payroll_department q1_payments q2_payments q3_payments
+##                 &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;
+##  1               4301      24931.      29182.      26546.
+##  2               4302      11344.      13212.      11508.
+##  3               4301      24184       28327.      28744.
+##  4               4301      29391.      36591.      32905.
+##  5               4302      20813       24136       21518.
+##  6               4302      16057.      17927.      14150.
+##  7               4301      22162.      25664.      23404.
+##  8               4301          0           0         331.
+##  9               4301      11941.      14330.      13404.
+## 10               4301      17046.      20457.      18777.
+## # … with 68,554 more rows, and 13 more variables:
+## #   q4_payments &lt;dbl&gt;, payments_over_base_pay &lt;dbl&gt;,
+## #   percent_over_base_pay &lt;dbl&gt;, total_payments &lt;dbl&gt;,
+## #   base_pay &lt;dbl&gt;, permanent_bonus_pay &lt;dbl&gt;,
+## #   longevity_bonus_pay &lt;dbl&gt;, temporary_bonus_pay &lt;dbl&gt;,
+## #   lump_sum_pay &lt;dbl&gt;, overtime_pay &lt;dbl&gt;,
+## #   other_pay_adjustments &lt;dbl&gt;, …
+```
+
+---
+
+class: middle 
+
+## subsetting variables/columns
+
+&lt;img src="img/data-wrangle.001.jpeg" width="80%" /&gt;
+
+--
+
+`select()`
+
+---
+
+## subsetting observations/rows
+
+&lt;img src="img/data-wrangle.002.jpeg" width="80%" /&gt;
+
+`slice()` and `filter()` 
+
+---
+
+.pull-left[
+`slice()` subsetting rows based on a row number.
+
+The data below include all the rows from third to seventh. Including third and seventh.
+
+
+```r
+slice(lapd, 3:7)
+```
+
+```
+## # A tibble: 5 × 35
+##   row_id    year department_title payroll_departm… record_number
+##   &lt;chr&gt;    &lt;dbl&gt; &lt;chr&gt;                       &lt;dbl&gt;         &lt;dbl&gt;
+## 1 3-10001…  2013 Police (LAPD)                4301    1000194958
+## 2 3-10002…  2013 Police (LAPD)                4301    1000232317
+## 3 3-10003…  2013 Police (LAPD)                4302    1000329284
+## 4 3-10011…  2013 Police (LAPD)                4302    1001124320
+## 5 3-10012…  2013 Police (LAPD)                4301    1001221822
+## # … with 30 more variables: job_class_title &lt;chr&gt;,
+## #   employment_type &lt;chr&gt;, hourly_or_event_rate &lt;dbl&gt;,
+## #   projected_annual_salary &lt;dbl&gt;, q1_payments &lt;dbl&gt;,
+## #   q2_payments &lt;dbl&gt;, q3_payments &lt;dbl&gt;, q4_payments &lt;dbl&gt;,
+## #   payments_over_base_pay &lt;dbl&gt;, percent_over_base_pay &lt;dbl&gt;,
+## #   total_payments &lt;dbl&gt;, base_pay &lt;dbl&gt;,
+## #   permanent_bonus_pay &lt;dbl&gt;, longevity_bonus_pay &lt;dbl&gt;, …
+```
+
+
+]
+
+--
+
+.pull-right[
+
+`filter()` subsetting rows based on a condition.
+
+The data below includes rows when the recorded year is 2018.
+
+
+```r
+filter(lapd, year == 2018)
+```
+
+```
+## # A tibble: 14,824 × 35
+##    row_id   year department_title payroll_departm… record_number
+##    &lt;chr&gt;   &lt;dbl&gt; &lt;chr&gt;                       &lt;dbl&gt;         &lt;dbl&gt;
+##  1 8-1000…  2018 Police (LAPD)                4301    1000027830
+##  2 8-1000…  2018 Police (LAPD)                4301    1000194958
+##  3 8-1000…  2018 Police (LAPD)                4301    1000232317
+##  4 8-1001…  2018 Police (LAPD)                4302    1001124320
+##  5 8-1001…  2018 Police (LAPD)                4301    1001221822
+##  6 8-1001…  2018 Police (LAPD)                4301    1001317832
+##  7 8-1001…  2018 Police (LAPD)                4301     100162910
+##  8 8-1001…  2018 Police (LAPD)                4301    1001675957
+##  9 8-1001…  2018 Police (LAPD)                4302    1001884819
+## 10 8-1001…  2018 Police (LAPD)                4302    1001893163
+## # … with 14,814 more rows, and 30 more variables:
+## #   job_class_title &lt;chr&gt;, employment_type &lt;chr&gt;,
+## #   hourly_or_event_rate &lt;dbl&gt;, projected_annual_salary &lt;dbl&gt;,
+## #   q1_payments &lt;dbl&gt;, q2_payments &lt;dbl&gt;, q3_payments &lt;dbl&gt;,
+## #   q4_payments &lt;dbl&gt;, payments_over_base_pay &lt;dbl&gt;,
+## #   percent_over_base_pay &lt;dbl&gt;, total_payments &lt;dbl&gt;,
+## #   base_pay &lt;dbl&gt;, permanent_bonus_pay &lt;dbl&gt;, …
+```
+
+]
+
+---
+
+class: middle 
+
+.pull-left[
+
+### Relational Operators in R
+
+
+| Operator | Description              |
+|----------|--------------------------|
+| &lt;        | Less than                |
+| &gt;        | Greater than             |
+| &lt;=       | Less than or equal to    |
+| &gt;=       | Greater than or equal to |
+| ==       | Equal to                 |
+| !=       | Not equal to             |
+
+]
+
+.pull-right[
+
+### Logical Operators in R
+
+| Operator | Description |
+|----------|-------------|
+| &amp;        | and         |
+| &amp;#124;   | or          |
+
+]
+
+---
+
+class: middle
+
+Q. According to [datausa.io](https://datausa.io/profile/geo/los-angeles-ca#:~:text=In%202018%2C%20Los%20Angeles%2C%20CA,%2462%2C474%2C%20a%203.78%25%20increase.) Los Angeles had a median household income of $62474 in 2018. How many LAPD staff members had a base pay higher than $62474 in year 2018 according to this data?
+
+.footnote[Median household income is **not** the same thing as median employee income. Our aim is data wrangling and not necessarily statistical analysis for now.]
+
+---
+
+
+```r
+lapd %&gt;% 
+  filter(year == 2018 &amp; base_pay &gt; 62474)
+```
+
+```
+## # A tibble: 11,690 × 35
+##    row_id   year department_title payroll_departm… record_number
+##    &lt;chr&gt;   &lt;dbl&gt; &lt;chr&gt;                       &lt;dbl&gt;         &lt;dbl&gt;
+##  1 8-1000…  2018 Police (LAPD)                4301    1000027830
+##  2 8-1000…  2018 Police (LAPD)                4301    1000194958
+##  3 8-1000…  2018 Police (LAPD)                4301    1000232317
+##  4 8-1001…  2018 Police (LAPD)                4302    1001124320
+##  5 8-1001…  2018 Police (LAPD)                4301    1001221822
+##  6 8-1001…  2018 Police (LAPD)                4301    1001317832
+##  7 8-1001…  2018 Police (LAPD)                4301     100162910
+##  8 8-1001…  2018 Police (LAPD)                4301    1001675957
+##  9 8-1001…  2018 Police (LAPD)                4302    1001884819
+## 10 8-1001…  2018 Police (LAPD)                4302    1001893163
+## # … with 11,680 more rows, and 30 more variables:
+## #   job_class_title &lt;chr&gt;, employment_type &lt;chr&gt;,
+## #   hourly_or_event_rate &lt;dbl&gt;, projected_annual_salary &lt;dbl&gt;,
+## #   q1_payments &lt;dbl&gt;, q2_payments &lt;dbl&gt;, q3_payments &lt;dbl&gt;,
+## #   q4_payments &lt;dbl&gt;, payments_over_base_pay &lt;dbl&gt;,
+## #   percent_over_base_pay &lt;dbl&gt;, total_payments &lt;dbl&gt;,
+## #   base_pay &lt;dbl&gt;, permanent_bonus_pay &lt;dbl&gt;, …
+```
+
+
+---
+
+class: middle 
+
+
+
+```r
+lapd %&gt;% 
+  filter(year == 2018 &amp; base_pay &gt; 62474) %&gt;% 
+  nrow()
+```
+
+```
+## [1] 11690
+```
+
+---
+
+class: middle 
+
+Q. How many observations are available between 2013 and 2015 including 2013 and 2015?
+
+--
+
+
+```r
+lapd %&gt;% 
+  filter(year &gt;= 2013 &amp; year &lt;= 2015)
+```
+
+```
+## # A tibble: 40,227 × 35
+##    row_id   year department_title payroll_departm… record_number
+##    &lt;chr&gt;   &lt;dbl&gt; &lt;chr&gt;                       &lt;dbl&gt;         &lt;dbl&gt;
+##  1 3-1000…  2013 Police (LAPD)                4301    1000027830
+##  2 3-1000…  2013 Police (LAPD)                4302    1000155488
+##  3 3-1000…  2013 Police (LAPD)                4301    1000194958
+##  4 3-1000…  2013 Police (LAPD)                4301    1000232317
+##  5 3-1000…  2013 Police (LAPD)                4302    1000329284
+##  6 3-1001…  2013 Police (LAPD)                4302    1001124320
+##  7 3-1001…  2013 Police (LAPD)                4301    1001221822
+##  8 3-1001…  2013 Police (LAPD)                4301    1001243583
+##  9 3-1001…  2013 Police (LAPD)                4301    1001317832
+## 10 3-1001…  2013 Police (LAPD)                4301     100162910
+## # … with 40,217 more rows, and 30 more variables:
+## #   job_class_title &lt;chr&gt;, employment_type &lt;chr&gt;,
+## #   hourly_or_event_rate &lt;dbl&gt;, projected_annual_salary &lt;dbl&gt;,
+## #   q1_payments &lt;dbl&gt;, q2_payments &lt;dbl&gt;, q3_payments &lt;dbl&gt;,
+## #   q4_payments &lt;dbl&gt;, payments_over_base_pay &lt;dbl&gt;,
+## #   percent_over_base_pay &lt;dbl&gt;, total_payments &lt;dbl&gt;,
+## #   base_pay &lt;dbl&gt;, permanent_bonus_pay &lt;dbl&gt;, …
+```
+
+---
+
+class: middle 
+
+Q. How many observations are available between 2013 and 2015 including 2013 and 2015?
+
+
+
+
+```r
+lapd %&gt;% 
+  filter(year &gt;= 2013 &amp; year &lt;= 2015) %&gt;% 
+  nrow()
+```
+
+```
+## [1] 40227
+```
+
+---
+
+class: middle 
+
+Q. How many LAPD staff were employed full time in 2018?
+
+
+
+
+```r
+lapd %&gt;% 
+  filter(employment_type == "Full Time" &amp; year == 2018) %&gt;% 
+  nrow()
+```
+
+```
+## [1] 14664
+```
+
+---
+class: middle
+
+We have done all sorts of selections, slicing, filtering on `lapd` but it has not changed at all. Why do you think so?
+
+
+```r
+glimpse(lapd)
+```
+
+```
+## Rows: 68,564
+## Columns: 35
+## $ row_id                     &lt;chr&gt; "3-1000027830ctFu", "3-1000…
+## $ year                       &lt;dbl&gt; 2013, 2013, 2013, 2013, 201…
+## $ department_title           &lt;chr&gt; "Police (LAPD)", "Police (L…
+## $ payroll_department         &lt;dbl&gt; 4301, 4302, 4301, 4301, 430…
+## $ record_number              &lt;dbl&gt; 1000027830, 1000155488, 100…
+## $ job_class_title            &lt;chr&gt; "Police Detective II", "Cle…
+## $ employment_type            &lt;chr&gt; "Full Time", "Full Time", "…
+## $ hourly_or_event_rate       &lt;dbl&gt; 53.16, 23.77, 60.80, 60.98,…
+## $ projected_annual_salary    &lt;dbl&gt; 110998.08, 49623.67, 126950…
+## $ q1_payments                &lt;dbl&gt; 24931.20, 11343.96, 24184.0…
+## $ q2_payments                &lt;dbl&gt; 29181.61, 13212.37, 28327.2…
+## $ q3_payments                &lt;dbl&gt; 26545.80, 11508.36, 28744.2…
+## $ q4_payments                &lt;dbl&gt; 29605.30, 13442.53, 33224.8…
+## $ payments_over_base_pay     &lt;dbl&gt; 4499.12, 1844.82, 13192.43,…
+## $ percent_over_base_pay      &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, …
+## $ total_payments             &lt;dbl&gt; 110263.91, 49507.22, 114480…
+## $ base_pay                   &lt;dbl&gt; 105764.79, 47662.40, 101287…
+## $ permanent_bonus_pay        &lt;dbl&gt; 3174.12, 0.00, 7363.95, 708…
+## $ longevity_bonus_pay        &lt;dbl&gt; 0.00, 1310.82, 0.00, 0.00, …
+## $ temporary_bonus_pay        &lt;dbl&gt; 1325.00, 0.00, 1205.00, 132…
+## $ lump_sum_pay               &lt;dbl&gt; 0.00, 0.00, 2133.18, 0.00, …
+## $ overtime_pay               &lt;dbl&gt; 0.00, 0.00, 4424.32, 9839.3…
+## $ other_pay_adjustments      &lt;dbl&gt; 0.00, 534.00, -1934.02, -21…
+## $ other_pay_payroll_explorer &lt;dbl&gt; 4499.12, 1844.82, 8768.11, …
+## $ mou                        &lt;chr&gt; "24", "3", "24", "24", "12"…
+## $ mou_title                  &lt;chr&gt; "POLICE OFFICERS UNIT", "CL…
+## $ fms_department             &lt;dbl&gt; 70, 70, 70, 70, 70, 70, 70,…
+## $ job_class                  &lt;chr&gt; "2223", "1358", "2227", "22…
+## $ pay_grade                  &lt;chr&gt; "2", "0", "1", "1", "0", "2…
+## $ average_health_cost        &lt;dbl&gt; 11651.40, 10710.24, 11651.4…
+## $ average_dental_cost        &lt;dbl&gt; 898.08, 405.24, 898.08, 898…
+## $ average_basic_life         &lt;dbl&gt; 191.04, 11.40, 191.04, 191.…
+## $ average_benefit_cost       &lt;dbl&gt; 12740.52, 11126.88, 12740.5…
+## $ benefits_plan              &lt;chr&gt; "Police", "City", "Police",…
+## $ job_class_link             &lt;chr&gt; "http://per.lacity.org/pers…
+```
+
+---
+
+class: middle
+
+Moving forward we are only going to focus on year 2018, and use `job_class_title`, `employment_type`, and `base_pay`. Let's clean our data accordingly and move on with the smaller `lapd` data that we need.
+
+---
+
+class: middle
+
+
+```r
+lapd %&gt;% 
+  filter(year == 2018) %&gt;% 
+  select(job_class_title, 
+         employment_type, 
+         base_pay)
+```
+
+```
+## # A tibble: 14,824 × 3
+##    job_class_title                  employment_type base_pay
+##    &lt;chr&gt;                            &lt;chr&gt;              &lt;dbl&gt;
+##  1 Police Detective II              Full Time        119322.
+##  2 Police Sergeant I                Full Time        113271.
+##  3 Police Lieutenant II             Full Time        148116 
+##  4 Police Service Representative II Full Time         78677.
+##  5 Police Officer III               Full Time        109374.
+##  6 Police Officer II                Full Time         95002.
+##  7 Police Officer II                Full Time         95379.
+##  8 Police Officer II                Full Time         95388.
+##  9 Equipment Mechanic               Full Time         80496 
+## 10 Detention Officer                Full Time         69640 
+## # … with 14,814 more rows
+```
+
+---
+
+class: middle
+
+
+```r
+lapd &lt;- 
+  lapd %&gt;% 
+  filter(year == 2018) %&gt;% 
+  select(job_class_title, 
+         employment_type, 
+         base_pay)
+```
+
+
+---
+
+class: middle
+
+
+
+
+
+
+```r
+glimpse(lapd)
+```
+
+```
+## Rows: 14,824
+## Columns: 3
+## $ job_class_title &lt;chr&gt; "Police Detective II", "Police Sergean…
+## $ employment_type &lt;chr&gt; "Full Time", "Full Time", "Full Time",…
+## $ base_pay        &lt;dbl&gt; 119321.60, 113270.70, 148116.00, 78676…
+```
+
+**Goal**: 
+
+Create a new variable called `base_pay_k` that represents `base_pay` in thousand dollars.
+
+---
+
+class: middle
+
+
+```r
+lapd %&gt;% 
+  mutate(base_pay_k = base_pay/1000)
+```
+
+```
+## # A tibble: 14,824 × 4
+##    job_class_title           employment_type base_pay base_pay_k
+##    &lt;chr&gt;                     &lt;chr&gt;              &lt;dbl&gt;      &lt;dbl&gt;
+##  1 Police Detective II       Full Time        119322.      119. 
+##  2 Police Sergeant I         Full Time        113271.      113. 
+##  3 Police Lieutenant II      Full Time        148116       148. 
+##  4 Police Service Represent… Full Time         78677.       78.7
+##  5 Police Officer III        Full Time        109374.      109. 
+##  6 Police Officer II         Full Time         95002.       95.0
+##  7 Police Officer II         Full Time         95379.       95.4
+##  8 Police Officer II         Full Time         95388.       95.4
+##  9 Equipment Mechanic        Full Time         80496        80.5
+## 10 Detention Officer         Full Time         69640        69.6
+## # … with 14,814 more rows
+```
+
+---
+
+class: middle
+
+
+```r
+glimpse(lapd)
+```
+
+```
+## Rows: 14,824
+## Columns: 3
+## $ job_class_title &lt;chr&gt; "Police Detective II", "Police Sergean…
+## $ employment_type &lt;chr&gt; "Full Time", "Full Time", "Full Time",…
+## $ base_pay        &lt;dbl&gt; 119321.60, 113270.70, 148116.00, 78676…
+```
+
+**Goal**: 
+
+Create a new variable called `base_pay_level` which has `Less Than 0`, `No Income`, `Less than Median and Greater than 0` and `Greater than Median`. We will consider $62474 as the median (from previous lecture).
+
+---
+
+class: middle
+
+Let's first check to see there is anyone earning exactly the median value.
+
+
+```r
+lapd %&gt;% 
+  filter(base_pay == 62474)
+```
+
+```
+## # A tibble: 0 × 3
+## # … with 3 variables: job_class_title &lt;chr&gt;,
+## #   employment_type &lt;chr&gt;, base_pay &lt;dbl&gt;
+```
+
+---
+
+
+```r
+lapd %&gt;% 
+  mutate(base_pay_level = case_when(
+    base_pay &lt; 0 ~ "Less than 0", 
+    base_pay == 0 ~ "No Income",
+    base_pay &lt; 62474 &amp; base_pay &gt; 0 ~ "Less than Median, Greater than 0",
+    base_pay &gt; 62474 ~ "Greater than Median")) 
+```
+
+```
+## # A tibble: 14,824 × 4
+##    job_class_title      employment_type base_pay base_pay_level 
+##    &lt;chr&gt;                &lt;chr&gt;              &lt;dbl&gt; &lt;chr&gt;          
+##  1 Police Detective II  Full Time        119322. Greater than M…
+##  2 Police Sergeant I    Full Time        113271. Greater than M…
+##  3 Police Lieutenant II Full Time        148116  Greater than M…
+##  4 Police Service Repr… Full Time         78677. Greater than M…
+##  5 Police Officer III   Full Time        109374. Greater than M…
+##  6 Police Officer II    Full Time         95002. Greater than M…
+##  7 Police Officer II    Full Time         95379. Greater than M…
+##  8 Police Officer II    Full Time         95388. Greater than M…
+##  9 Equipment Mechanic   Full Time         80496  Greater than M…
+## 10 Detention Officer    Full Time         69640  Greater than M…
+## # … with 14,814 more rows
+```
+
+---
+
+
+
+```r
+lapd %&gt;% 
+  mutate(base_pay_level = case_when(
+    base_pay &lt; 0 ~ "Less than 0", 
+    base_pay == 0 ~ "No Income",
+    base_pay &lt; 62474 &amp; base_pay &gt; 0 ~ "Less than Median, Greater than 0",
+    base_pay &gt; 62474 ~ "Greater than Median")) %&gt;% 
+  select(base_pay_level)
+```
+
+```
+## # A tibble: 14,824 × 1
+##    base_pay_level     
+##    &lt;chr&gt;              
+##  1 Greater than Median
+##  2 Greater than Median
+##  3 Greater than Median
+##  4 Greater than Median
+##  5 Greater than Median
+##  6 Greater than Median
+##  7 Greater than Median
+##  8 Greater than Median
+##  9 Greater than Median
+## 10 Greater than Median
+## # … with 14,814 more rows
+```
+
+
+---
+
+We can use pipes with ggplot too! 
+
+.left-panel[
+
+```r
+lapd %&gt;% 
+  mutate(base_pay_level = case_when(
+    base_pay &lt; 0 ~ "Less than 0", 
+    base_pay == 0 ~ "No Income",
+    base_pay &lt; 62474 &amp; base_pay &gt; 0 ~ "Less than Median, Greater than 0",
+    base_pay &gt; 62474 ~ "Greater than Median")) %&gt;% 
+  select(base_pay_level) %&gt;% 
+  ggplot(aes(x = base_pay_level)) +
+  geom_bar()
+```
+]
+
+.right-panel[
+![](3-data-wrangle_files/figure-html/unnamed-chunk-42-1.png)&lt;!-- --&gt;
+]
+
+---
+
+class: middle
+
+
+```r
+glimpse(lapd)
+```
+
+```
+## Rows: 14,824
+## Columns: 3
+## $ job_class_title &lt;chr&gt; "Police Detective II", "Police Sergean…
+## $ employment_type &lt;chr&gt; "Full Time", "Full Time", "Full Time",…
+## $ base_pay        &lt;dbl&gt; 119321.60, 113270.70, 148116.00, 78676…
+```
+
+**Goal**: 
+
+Make `job_class_title` and `employment_type` factor variables. 
+
+
+---
+
+class: middle
+
+
+```r
+lapd %&gt;% 
+  mutate(employment_type = as.factor(employment_type),
+         job_class_title = as.factor(job_class_title)) 
+```
+
+```
+## # A tibble: 14,824 × 3
+##    job_class_title                  employment_type base_pay
+##    &lt;fct&gt;                            &lt;fct&gt;              &lt;dbl&gt;
+##  1 Police Detective II              Full Time        119322.
+##  2 Police Sergeant I                Full Time        113271.
+##  3 Police Lieutenant II             Full Time        148116 
+##  4 Police Service Representative II Full Time         78677.
+##  5 Police Officer III               Full Time        109374.
+##  6 Police Officer II                Full Time         95002.
+##  7 Police Officer II                Full Time         95379.
+##  8 Police Officer II                Full Time         95388.
+##  9 Equipment Mechanic               Full Time         80496 
+## 10 Detention Officer                Full Time         69640 
+## # … with 14,814 more rows
+```
+
+---
+
+class: middle
+
+`as.factor()` - makes a vector factor  
+`as.numeric()` - makes a vector numeric  
+`as.integer()` - makes a vector integer  
+`as.double()` - makes a vector double  
+`as.character()` - makes a vector character  
+
+---
+
+class: middle
+
+Once again we did not "save"
+anything into `lapd`. As we work on data cleaning it makes sense not to "save" the data frames. Once we see the final data frame we want then we can "save" (i.e. overwrite) it.
+
+---
+
+In your lecture notes, you can do all the changes in this lecture in one long set of piped code. That's the beauty of piping!
+
+
+```r
+lapd &lt;- 
+  lapd %&gt;% 
+  clean_names() %&gt;% 
+  filter(year == 2018) %&gt;% 
+  select(job_class_title, 
+         employment_type, 
+         base_pay) %&gt;% 
+    mutate(employment_type = as.factor(employment_type),
+           job_class_title = as.factor(job_class_title),
+           base_pay_level = case_when(
+             base_pay &lt; 0 ~ "Less than 0", 
+             base_pay == 0 ~ "No Income",
+             base_pay &lt; 62474 &amp; base_pay &gt; 0 ~ "Less than Median, Greater than 0",
+             base_pay &gt; 62474 ~ "Greater than Median")) 
+```
+
+---
+
+class: middle
+
+## Word of caution
+
+The functions `clean_names()`, `select()`, `filter()`, `mutate()` all take a data frame as the first argument. Even though we do not see it, the data frame is piped through from the previous step of code at each step. 
+When we use these functions without the `%&gt;%` we have to include the data frame explicitly.
+
+
+.pull-left[
+Data frame is used as the first argument
+
+```r
+clean_names(lapd)
+```
+
+```
+## # A tibble: 14,824 × 3
+##    job_class_title                  employment_type base_pay
+##    &lt;chr&gt;                            &lt;chr&gt;              &lt;dbl&gt;
+##  1 Police Detective II              Full Time        119322.
+##  2 Police Sergeant I                Full Time        113271.
+##  3 Police Lieutenant II             Full Time        148116 
+##  4 Police Service Representative II Full Time         78677.
+##  5 Police Officer III               Full Time        109374.
+##  6 Police Officer II                Full Time         95002.
+##  7 Police Officer II                Full Time         95379.
+##  8 Police Officer II                Full Time         95388.
+##  9 Equipment Mechanic               Full Time         80496 
+## 10 Detention Officer                Full Time         69640 
+## # … with 14,814 more rows
+```
+]
+
+.pull-right[
+Data frame is piped
+
+
+```r
+lapd %&gt;% 
+  clean_names()
+```
+
+```
+## # A tibble: 14,824 × 3
+##    job_class_title                  employment_type base_pay
+##    &lt;chr&gt;                            &lt;chr&gt;              &lt;dbl&gt;
+##  1 Police Detective II              Full Time        119322.
+##  2 Police Sergeant I                Full Time        113271.
+##  3 Police Lieutenant II             Full Time        148116 
+##  4 Police Service Representative II Full Time         78677.
+##  5 Police Officer III               Full Time        109374.
+##  6 Police Officer II                Full Time         95002.
+##  7 Police Officer II                Full Time         95379.
+##  8 Police Officer II                Full Time         95388.
+##  9 Equipment Mechanic               Full Time         80496 
+## 10 Detention Officer                Full Time         69640 
+## # … with 14,814 more rows
+```
+]
+
+---
+
+class: middle
+
+
+
+
+
+
+.pull-left[
+## Data
+Observations
+]
+
+.pull-left[
+## Aggregate Data
+Summaries of observations
+]
+
+---
+class: inverse middle
+
+.font75[Aggregating Categorical Data]
+
+---
+
+
+
+class: middle
+
+
+```r
+lapd %&gt;% 
+  count(employment_type)
+```
+
+```
+## # A tibble: 3 × 2
+##   employment_type     n
+##   &lt;chr&gt;           &lt;int&gt;
+## 1 Full Time       14664
+## 2 Part Time         132
+## 3 Per Event          28
+```
+
+
+---
+
+class: middle
+
+
+```r
+lapd %&gt;% 
+  count(employment_type) %&gt;% 
+  mutate(prop = n/sum(n))
+```
+
+```
+## # A tibble: 3 × 3
+##   employment_type     n    prop
+##   &lt;chr&gt;           &lt;int&gt;   &lt;dbl&gt;
+## 1 Full Time       14664 0.989  
+## 2 Part Time         132 0.00890
+## 3 Per Event          28 0.00189
+```
+
+
+
+
+---
+
+class: middle
+
+## Mean
+
+
+
+```r
+summarize(lapd, 
+          mean_base_pay = mean(base_pay))
+```
+
+```
+## # A tibble: 1 × 1
+##   mean_base_pay
+##           &lt;dbl&gt;
+## 1        85149.
+```
+
+
+---
+
+
+
+
+## Median
+
+.pull-left[
+
+```r
+summarize(lapd, 
+          median(base_pay))
+```
+
+```
+## # A tibble: 1 × 1
+##   `median(base_pay)`
+##                &lt;dbl&gt;
+## 1             97601.
+```
+]
+
+--
+
+.pull-right[
+
+
+```r
+median(lapd$base_pay)
+```
+
+```
+## [1] 97600.66
+```
+
+]
+
+---
+
+## Quantiles
+
+
+```r
+summarize(lapd, quantile(base_pay, c(0.25, 0.50, 0.75)))
+```
+
+```
+## # A tibble: 3 × 1
+##   `quantile(base_pay, c(0.25, 0.5, 0.75))`
+##                                      &lt;dbl&gt;
+## 1                                   67266.
+## 2                                   97601.
+## 3                                  109368.
+```
+
+
+
+---
+
+class: middle
+
+We can use multiple functions such as `mean()` and `median` within the summarize function.
+
+
+```r
+summarize(lapd,
+          mean(base_pay),
+          median(base_pay))
+```
+
+```
+## # A tibble: 1 × 2
+##   `mean(base_pay)` `median(base_pay)`
+##              &lt;dbl&gt;              &lt;dbl&gt;
+## 1           85149.             97601.
+```
+
+---
+
+class: middle 
+
+In order to display the variable names more legibly in the output, we can assign variable names to numerical summaries (e.g. `mean_base_pay`).
+
+
+```r
+summarize(lapd,
+          mean_base_pay = mean(base_pay),
+          med_base_pay = median(base_pay))
+```
+
+```
+## # A tibble: 1 × 2
+##   mean_base_pay med_base_pay
+##           &lt;dbl&gt;        &lt;dbl&gt;
+## 1        85149.       97601.
+```
+
+---
+
+class: middle
+
+Some tther useful functions that `summarize()` can handle are:
+
+`min()`  
+`max()`  
+`sd()`  
+`var()`
+
+---
+
+class: inverse middle
+
+.font75[Aggregating Data by Groups]
+
+---
+
+class: middle
+
+`group_by()`
+
+&lt;img src="img/data-wrangle.003.jpeg" width="80%" style="display: block; margin: auto;" /&gt;
+
+`group_by()` separates the data frame by the groups. Any action following `group_by()` will be completed for each group separately.
+---
+
+class: middle
+
+Q. What is the median salary for each employment type?
+
+---
+
+class: middle
+
+
+```r
+lapd %&gt;% 
+  group_by(employment_type)
+```
+
+```
+## # A tibble: 14,824 × 3
+## # Groups:   employment_type [3]
+##    job_class_title                  employment_type base_pay
+##    &lt;chr&gt;                            &lt;chr&gt;              &lt;dbl&gt;
+##  1 Police Detective II              Full Time        119322.
+##  2 Police Sergeant I                Full Time        113271.
+##  3 Police Lieutenant II             Full Time        148116 
+##  4 Police Service Representative II Full Time         78677.
+##  5 Police Officer III               Full Time        109374.
+##  6 Police Officer II                Full Time         95002.
+##  7 Police Officer II                Full Time         95379.
+##  8 Police Officer II                Full Time         95388.
+##  9 Equipment Mechanic               Full Time         80496 
+## 10 Detention Officer                Full Time         69640 
+## # … with 14,814 more rows
+```
+
+---
+
+class: middle
+
+
+```r
+lapd %&gt;% 
+  group_by(employment_type) %&gt;% 
+  summarize(med_base_pay = median(base_pay))
+```
+
+```
+## # A tibble: 3 × 2
+##   employment_type med_base_pay
+##   &lt;chr&gt;                  &lt;dbl&gt;
+## 1 Full Time             97996.
+## 2 Part Time             14474.
+## 3 Per Event              4275
+```
+
+---
+
+class: middle
+
+We can also remind ourselves how many staff members there were in each group.
+
+
+```r
+lapd %&gt;% 
+  group_by(employment_type) %&gt;% 
+  summarize(med_base_pay = median(base_pay),
+            count = n())
+```
+
+```
+## # A tibble: 3 × 3
+##   employment_type med_base_pay count
+##   &lt;chr&gt;                  &lt;dbl&gt; &lt;int&gt;
+## 1 Full Time             97996. 14664
+## 2 Part Time             14474.   132
+## 3 Per Event              4275     28
+```
+
+Note that `n()` does not take any arguments.
+
+---
+
+class: middle
+
+
+## Schedule for the Day
+
+__10:00 - 10:15 Introduction and Setup__  
+__10:15 - 11:15 Introduction to Toolkit and Data Basics__  
+__11:20 - 12:30 Data Visualization__  
+__1:00 - 1:45 Data Wrangling__   
+1:45 - 2:15 Packages and External Datasets  
+2:15 - 2:30 Wrap Up 
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"ratio": "16:9",
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
