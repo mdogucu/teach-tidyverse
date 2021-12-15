@@ -22,6 +22,9 @@ Website: [minedogucu.com](http://www.minedogucu.com)
 
 Twitter: [@MineDogucu](http://www.twitter.com/MineDogucu)  
 
+## Organizer Info
+
+This workshop is co-organized by [Alma Castro(Cypress College)](https://www.cypresscollege.edu/academics/divisions-special-programs/science-engineering-math/mathematics/math-department/), [Jessica Jaynes(California State University Fullerton)](http://hpri.fullerton.edu/Faculty/Jaynes/jaynes.htm), and [Mine Dogucu(UC Irvine)](http://www.minedogucu.com)
 
 <hr>
 
